@@ -5,7 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
  
 import HomeScreen from './screens/HomeScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
- 
+import HistoryScreen from './screens/HistoryScreen';
+import SearchScreen from './screens/SearchScreen';
+import RandomizerScreen from './screens/RandomizerScreen';
+
 const RootStack = createStackNavigator();
  
 const App = () => {
@@ -13,7 +16,10 @@ const App = () => {
     <NavigationContainer>
       <RootStack.Navigator>
         <RootStack.Screen name="Home" component={HomeScreen} />
-        <RootStack.Screen name="Landing" component={FavoritesScreen} />
+        <RootStack.Screen name="Favorites" component={FavoritesScreen} />
+        <RootStack.Screen name="History" component={HistoryScreen} />
+        <RootStack.Screen name="Search" component={SearchScreen} />
+        <RootStack.Screen name="Randomizer" component={RandomizerScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

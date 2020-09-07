@@ -1,6 +1,6 @@
 // @ts-check
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
  
 const styles = StyleSheet.create({
   container: {
@@ -10,10 +10,23 @@ const styles = StyleSheet.create({
   },
 });
  
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text>Protected Home Screen</Text>
+      <Text>Home Screen</Text>
+
+      <Button
+        title="Search For Something"
+        onPress={() => navigation.navigate('Search')}
+      />
+      <Button
+        title="Go to History"
+        onPress={() => navigation.navigate('History')}
+      />
+      <Button
+      title="Go to Favorites"
+      onPress={() => navigation.navigate('Favorites')}
+      />
     </View>
   );
 };

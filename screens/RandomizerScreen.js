@@ -10,17 +10,16 @@ const styles = StyleSheet.create({
   },
 });
  
-const SearchScreen = ({ navigation }) => {
+const RandomizerScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text>Search Database Screen</Text>
-
+      <Text>Spin-Wheel/Randomizer Screen</Text>
       <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
+      title="Back to Favorites"
+      onPress={() => navigation.navigate('Favorites')}
       />
     </View>
   );
 };
  
-export default SearchScreen;
+export default RandomizerScreen;

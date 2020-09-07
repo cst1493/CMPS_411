@@ -5,7 +5,7 @@
 //import { Card, Button } from 'react-native-elements';
 
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
  
 const styles = StyleSheet.create({
   container: {
@@ -15,10 +15,18 @@ const styles = StyleSheet.create({
   },
 });
  
-const FavoritesScreen = () => {
+const FavoritesScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>Favorites Screen</Text>
+      <Button
+        title="Go to Home"
+        onPress={() => navigation.navigate('Home')}
+      />
+      <Button
+        title="Spin the wheel"
+        onPress={() => navigation.navigate('Randomizer')}
+      />
     </View>
   );
 };
