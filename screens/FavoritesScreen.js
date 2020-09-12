@@ -1,9 +1,4 @@
 // @ts-check
-//import * as React from 'react';
-//import { Text, View, Alert } from 'react-native';
-//import getEnvVars from './xxxxx';
-//import { Card, Button } from 'react-native-elements';
-
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
  

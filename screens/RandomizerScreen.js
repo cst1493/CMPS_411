@@ -3,18 +3,32 @@ import React from 'react';
 //import * as React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { Value } from 'react-native-reanimated';
-import WheelOfFortune from 'react-native-wheel-of-fortune';
-
-
-var value;
+//import WheelOfFortune from 'react-native-wheel-of-fortune';
 
 const RandomizerScreen = ({ navigation }) => {
   return (
-    DumbWheel()
+    <View style={styles.container}>
+      <Text>Randomizer screen</Text>
+      <Button
+        title="Go to Favorites"
+        onPress={() => navigation.navigate('Favorites')}
+      />
+    </View>
   );
 };
 
-function DumbWheel(){
+
+
+
+/*
+var value;
+const RandomizerScreen = ({ navigation }) => {
+  return (
+    Wheel()
+  );
+};
+
+function Wheel(){
   var rewards = [1,2,3,4,5,6,7,8,9,10]
   return(
   <View style={styles.container}>
@@ -32,7 +46,7 @@ function DumbWheel(){
       <Button title="Press me" onPress={ () => { WheelOfFortune.child._onPress() } } />
     </View>
   );
-}
+}*/
 
 const styles = StyleSheet.create({
   container: {
