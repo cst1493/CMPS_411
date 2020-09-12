@@ -1,7 +1,8 @@
 // @ts-check
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { Wheel } from 'react-custom-roulette';
+
  
 const styles = StyleSheet.create({
   container: {
@@ -21,16 +22,22 @@ const data = [
 ]
  
 const RandomizerScreen = ({ navigation }) => {
+  const [mustSpin, setMustSpin] = useState(false);
   return (
     <View style={styles.container}>
       <Wheel
-        mustStartSpinning={true}
+        mustStartSpinning={mustSpin}
         prizeNumber={Math.floor(Math.random() * (data.length - 1))}
         data={data}
         backgroundColors={['#3e3e3e', '#df3428']}
         textColors={['#ffffff']}
       />
       <Text>Spin-Wheel/Randomizer Screen</Text>
+      
+      <Button
+        title="Spin"
+        onPress={() => setMustSpin(true) }
+      />
       
       <Button
         title="Back to Favorites"
