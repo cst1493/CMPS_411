@@ -1,58 +1,57 @@
 // @ts-check
-import React from 'react';
 //import * as React from 'react';
+import React, { Component } from "react";
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { Value } from 'react-native-reanimated';
-//import WheelOfFortune from 'react-native-wheel-of-fortune';
+import { getEnforcing } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import Consts from "../Consts";
+// @ts-ignore
+import WheelOfFortune from 'react-native-wheel-of-fortune';
 
+var wheelFoods = ['Pizza','Burgers','Tacos','Canes', 'Popeyes', 'Sushi'];
+
+class WheelConstructor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      winnerValue: null,
+      winnerIndex: null
+    }
+    this.child = null
+  }
+}
+var construct = new WheelConstructor(); //TODO only make new if not already spun on this app-open.
 const RandomizerScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text>Randomizer screen</Text>
-      <Button
-        title="Go to Favorites"
-        onPress={() => navigation.navigate('Favorites')}
-      />
-    </View>
-  );
-};
-
-
-
-
-/*
-var value;
-const RandomizerScreen = ({ navigation }) => {
-  return (
-    Wheel()
-  );
-};
-
-function Wheel(){
-  var rewards = [1,2,3,4,5,6,7,8,9,10]
-  return(
-  <View style={styles.container}>
       <WheelOfFortune
-          onRef={ref => (WheelOfFortune.child = ref)} 
-          rewards={ rewards }
-          knobSize={20}
-          borderWidth={3}
-          borderColor={"#FFF"}
-          winner={3}
-          innerRadius={50}
-          backgroundColor={"#c0392b"}
-          getWinner={(value, index) => WheelOfFortune.setState({ winnerValue: value, winnerIndex: index })}
+        duration={5000}
+        onRef={ref => (construct.child = ref)} 
+        rewards={ wheelFoods }
+        knobSize={26}
+        borderWidth={10}
+        borderColor={ '#c0392b' }
+        winner={ GetRandomWinner() }
+        innerRadius={50}
+        backgroundColor={"#c0392b"}
+        //getWinner={(value, index) => construct.state({ winnerValue = value, winnerIndex: index })}
+        getWinner={(value, index) => construct.setState({ winnerValue: value, winnerIndex: index })}
       />
-      <Button title="Press me" onPress={ () => { WheelOfFortune.child._onPress() } } />
+      {/* <Button title="Press me" onPress={ () => { con.child._onPress() } } /> */}
     </View>
   );
-}*/
+};
+
+function GetRandomWinner() //Can add a static variable here if needing the result elsewhere.
+{
+  return (Math.floor(Math.random() * wheelFoods.length)) //gets the wheel result.
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: Consts.color1,
   },
 });
 
