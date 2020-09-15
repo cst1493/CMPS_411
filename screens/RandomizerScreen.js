@@ -7,7 +7,7 @@ import Consts from "../Consts";
 // @ts-ignore
 import WheelOfFortune from 'react-native-wheel-of-fortune';
 
-var wheelFoods = ['Pizza','Burgers','Tacos','Canes', 'Popeyes', 'Sushi'];
+//var wheelFoods = ['Pizza','Burgers','Tacos','Canes', 'Popeyes', 'Sushi'];
 
 class WheelConstructor extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ const RandomizerScreen = ({ navigation }) => {
       <WheelOfFortune
         duration={5000}
         onRef={ref => (construct.child = ref)} 
-        rewards={ wheelFoods }
+        rewards={ Consts.wheelFoods }
         knobSize={26}
         borderWidth={10}
         borderColor={ '#c0392b' }
@@ -43,7 +43,7 @@ const RandomizerScreen = ({ navigation }) => {
 
 function GetRandomWinner() //Can add a static variable here if needing the result elsewhere.
 {
-  return (Math.floor(Math.random() * wheelFoods.length)) //gets the wheel result.
+  return (Math.floor(Math.random() * Consts.wheelFoods.length)) //gets the wheel result.
 }
 
 const styles = StyleSheet.create({
