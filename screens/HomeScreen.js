@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
-import '../Consts';
 import Consts from '../Consts';
  
 //Navigation --> https://www.robinwieruch.de/react-native-navigation
@@ -59,20 +58,6 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 };
-/* OLD BUTTON STYLE
-<Button
-        title="Search For Something"
-        onPress={() => navigation.navigate('Search')}
-      />
-      <Button
-        title="Go to History"
-        onPress={() => navigation.navigate('History')}
-      />
-      <Button
-      title="Go to Favorites"
-      onPress={() => navigation.navigate('Favorites')}
-      />
-*/
 export default HomeScreen;
 
 //import * as React from 'react';
