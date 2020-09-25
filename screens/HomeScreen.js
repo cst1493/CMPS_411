@@ -1,6 +1,6 @@
 // @ts-check
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import Consts from '../Consts';
 
@@ -18,30 +18,35 @@ console.log(retrieveData);
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.looseText}> 
-        Hungry? I'm here to help you decide.
-      </Text>
-      <TouchableOpacity onPress={() => navigation.navigate('Search')}> 
-        <Text style={styles.button}>Search For Something New</Text>
-      </TouchableOpacity>
+    <ImageBackground style={styles.image} source={ require("../img/food.png") }>
+    
+      <View style={styles.container}>
+      
+        <Text style={styles.looseText}> 
+          Hungry?{"\n"}I'm here to help you decide.
+        </Text>
 
-      <TouchableOpacity onPress={() => navigation.navigate('History')}> 
-        <Text style={styles.button}>Recent Meal History</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Search')}> 
+          <Text style={styles.button}>Search New Meals</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Favorites')}> 
-        <Text style={styles.button}>Select From Favorites</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('History')}> 
+          <Text style={styles.button}>Recent Meal History</Text>
+        </TouchableOpacity>
 
-    </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Favorites')}> 
+          <Text style={styles.button}>Select From Favorites</Text>
+        </TouchableOpacity>
+
+      </View>
+    </ImageBackground>
   );
 };
 export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Consts.color1,
+    //backgroundColor: Consts.color1,
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -50,13 +55,13 @@ const styles = StyleSheet.create({
   },
   button: {
     minWidth: '90%',
-    marginBottom: '10%',
-    marginTop: '10%',
+    marginBottom: '5%',
+    marginTop: '5%',
     backgroundColor: Consts.color4,
     borderWidth: 1,
     borderRadius: 12,
     color: Consts.color3,
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
     padding: '3%',
     textAlign:'center',
@@ -66,7 +71,15 @@ const styles = StyleSheet.create({
     color: Consts.color5,
     fontSize: 26,
     fontWeight: 'bold',
-    padding: 25,
+    padding: 3,
+    borderRadius: 12,
     textAlign:'center',
+    justifyContent: 'center',
+    backgroundColor: Consts.color1,
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center'
   },
 });
