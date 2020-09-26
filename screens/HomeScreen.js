@@ -1,5 +1,6 @@
 // @ts-check
 import React from 'react';
+import { render } from 'react-dom';
 import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import Consts from '../Consts';
@@ -15,10 +16,9 @@ import retrieveData from '../localStorage';
 storeData;
 console.log(retrieveData);
 
-
 const HomeScreen = ({ navigation }) => {
   return (
-    <ImageBackground style={styles.image} source={ require("../img/food.png") }>
+    <ImageBackground style={styles.image} source={ require('../img/bg1.png') }>
     
       <View style={styles.container}>
       
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 15,
-    borderColor: Consts.color2,
+    //borderWidth: 15,
+    //borderColor: Consts.color2,
   },
   button: {
     minWidth: '90%',
