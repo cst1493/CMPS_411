@@ -8,7 +8,7 @@ import { AsyncStorage } from 'react-native';
 const buttonColor = Consts.color1;
 
 const FavoritesScreen = ({ navigation }) => {
-  //storeFavoritesList(true); // RECOMMENDED TO RUN storeFavoritesList(true) ONCE TO STORE DUMMY DATA //
+  //overwriteFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
   //AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
   updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
   console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 
 
 const favoritesKey = 'favorites'; //key is used to find, store and replace favorites data.
-async function storeFavoritesList(populateDummyData) { //overwrite current Consts.favoritesList.
+async function overwriteFavoritesList(populateDummyData) { //overwrite current Consts.favoritesList.
   if (populateDummyData == true) {
     const testFavorites = ['Chicken', 'Fish', 'Subway', 'Pizza'    ];/*
     , 'Salad', 'Shrimp', 'China Buffet', 'Popeyes', 'BK', 'Canes', 'Burgers', 'Fried Rice', 'Tacos', 'Pancakes', 'Eggs']; //*/
