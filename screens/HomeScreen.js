@@ -31,11 +31,11 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('History')}> 
-          <Text style={styles.button}>Recent Meal History</Text>
+          <Text style={styles.button}>Meal History</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate('Favorites')}> 
-          <Text style={styles.button}>Select From Favorites</Text>
+          <Text style={styles.button}>Favorites</Text>
         </TouchableOpacity>
 
       </View>
@@ -54,28 +54,30 @@ const styles = StyleSheet.create({
     //borderColor: Consts.color2,
   },
   button: {
-    minWidth: '90%',
+    minWidth: '70%',
     marginBottom: '5%',
     marginTop: '5%',
     backgroundColor: Consts.color4,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 12,
     color: Consts.color3,
     fontSize: 24,
     fontWeight: 'bold',
-    padding: '3%',
+    padding: '5%',
     textAlign:'center',
+    overflow: 'hidden',
   },
   looseText:{
     minWidth: '90%',
     color: Consts.color5,
     fontSize: 26,
     fontWeight: 'bold',
-    padding: 3,
+    padding: 5,
     borderRadius: 12,
     textAlign:'center',
     justifyContent: 'center',
     backgroundColor: Consts.color1,
+    overflow: 'hidden',
   },
   image: {
     flex: 1,
