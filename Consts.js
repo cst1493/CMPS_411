@@ -4,7 +4,10 @@
 const color1 = '#E6BC05'; const color2 = '#E61B00'; const color3 = '#FF790B'; const color4 = '#FCFCFC'; const color5 = '#000000';
 
 var wheelFoods = ['Pizza','Burgers','Tacos','Canes', 'Popeyes', 'Sushi'];
+var favoritesList = ['empty'];
+
 export default {
     wheelFoods,
+    favoritesList,
     color1, color2, color3, color4, color5
 }
