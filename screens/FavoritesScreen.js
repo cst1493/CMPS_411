@@ -13,6 +13,8 @@ const FavoritesScreen = ({ navigation }) => {
   updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
   console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
   
+  //removeFromWheel('Sushi'); addToWheel('Bacon'); //TODO connect functions to a checkbox on the list.
+
   return (
     <View style={styles.container}>
       <Text></Text>
@@ -95,6 +97,28 @@ async function updateFavoritesList() { //update Consts.favoritesList with stored
   } catch (error) {
       console.log("failed to retrieveData()");
   } return;
+}
+
+function addToWheel(addItem) {
+  if (Consts.wheelFoods.length > 11) { return } //too many items for the wheel.
+  for (var i = 0; i < Consts.wheelFoods.length; i++) {
+    if (Consts.wheelFoods[i] == addItem){
+      return; //duplicate found. do nothing.
+    }
+  }
+  Consts.wheelFoods.push(addItem); return;
+}
+function removeFromWheel(removeItem) {
+  var arr = Consts.wheelFoods;
+  for (var i = 0; i < arr.length; i++){
+    if (arr[i] == removeItem){
+      if (i == arr.length-1) {
+        arr.pop() //if this is the last item, don't set to anything.
+      } else { arr[i] = arr.pop() }
+      Consts.wheelFoods = arr;
+      return;
+    }
+  }
 }
 
 export default FavoritesScreen;
