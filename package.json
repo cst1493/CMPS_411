@@ -1,4 +1,12 @@
 {
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.0",
     "@react-native-community/masked-view": "0.1.10",
@@ -19,18 +27,13 @@
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
-    "react-native-web": "0.11.7",
-    "react-syntax-highlighter": "^13.5.3"
+    "react-native-svg": "^12.1.0",
+    "react-native-web": "~0.11.7",
+    "react-native-wheel-of-fortune": "0.0.8"
   },
   "devDependencies": {
-    "@babel/core": "7.9.0"
-  },
-  "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo web",
-    "eject": "expo eject"
+    "@babel/core": "^7.8.6",
+    "babel-preset-expo": "^8.2.3"
   },
   "private": true
 }
