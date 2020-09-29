@@ -1,11 +1,12 @@
 // @ts-check
 import React, {Component, useState } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Consts from '../Consts';
 
 class History extends Component{
   render() {
+    PullFromStorage();
     return(
       <View style={styles.container}>
         <Text style={styles.title}>
@@ -24,6 +25,20 @@ class History extends Component{
       </View>
     )
   }
+}
+const key = Consts.historyKey;
+async function PullFromStorage() { //update Consts.Name with stored data.
+  try {
+    let temp = await AsyncStorage.getItem(key); //got json storage file with array info.
+    if (temp !== null) { //if data found
+        Consts.historyList = await AsyncStorage.getItem(key).then(require => JSON.parse(require))
+        .catch(error => console.log('retrieve error'));
+        //console.log(readList);
+    }
+    else console.log('favoritesKey is empty.')
+  } catch (error) {
+        console.log("failed to retrieveData()");
+  } return;
 }
 
 const styles = StyleSheet.create({
