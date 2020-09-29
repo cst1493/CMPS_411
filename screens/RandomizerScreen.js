@@ -7,8 +7,10 @@ import Consts from "../Consts";
 // @ts-ignore
 import WheelOfFortune from 'react-native-wheel-of-fortune';
 
-class WheelConstructor extends Component {
-  constructor(props) {
+class Wheel extends Component
+{
+  constructor(props) 
+  {
     super(props);
     this.state = {
       winnerValue: null,
@@ -16,36 +18,31 @@ class WheelConstructor extends Component {
     }
     this.child = null
   }
+  render() {
+    return(
+      <View style={styles.container}>
+        <WheelOfFortune
+          duration={1000} //duration={5000}
+          onRef={ref => (this.child = ref)} 
+          rewards={ Consts.wheelFoods }
+          knobSize={26}
+          borderWidth={10}
+          borderColor={ '#c0392b' }
+          innerRadius={50}
+          backgroundColor={"#c0392b"}
+          getWinner={(value, index) => this.setState({ winnerValue: BorrowValue(value), winnerIndex: index })}
+        />
+        {/* <Button title="Press me" onPress={ () => { this.child._onPress() } } /> */}
+      </View>
+    )
+  }
 }
-var wheel;
-const RandomizerScreen = ({ navigation }) => {
-  wheel = new WheelConstructor();
-  return (
-    <View style={styles.container}>
-      <WheelOfFortune
-        //duration={5000}
-        duration={1000}
-        onRef={ref => (wheel.child = ref)} 
-        rewards={ Consts.wheelFoods }
-        //knobSize={26}
-        //borderWidth={10}
-        //borderColor={ '#c0392b' }
-        //innerRadius={50}
-        //backgroundColor={"#c0392b"}
-        getWinner={(value, index) => wheel.setState({ winnerValue: value, winnerIndex: index })}
-      />
-      {/* <Button title="Press me" onPress={ () => { con.child._onPress() } } /> */}
-    </View>
-  );
-};
 
-function GetRandomWinner() //Can add a static variable here if needing the result elsewhere.
-{
-  return (Math.floor(Math.random() * Consts.wheelFoods.length)) //gets the wheel result.
-}
-function value(value) //Can add a static variable here if needing the result elsewhere.
+//work-around to keep the value of the winner after the constructor is deleted.
+function BorrowValue(value)
 {
   Consts.winner = value.toString();
+  alert('The winner is: ' + Consts.winner); //TODO set to history[0];
   return value //gets the wheel result.
 }
 
@@ -59,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RandomizerScreen;
+export default Wheel;
