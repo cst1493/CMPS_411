@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 import React from 'react';
 import { render } from 'react-dom';
 import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';

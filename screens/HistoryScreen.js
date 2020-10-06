@@ -15,9 +15,13 @@ class History extends Component{
         <FlatList style={styles.scrollStyle}
           numColumns={1}
           data={Consts.historyList}
-          renderItem={({ item }) => (
-            <ListItem>
-              <Text>{ item }</Text>
+          renderItem={({ item, index }) => (
+            <ListItem containerStyle={ index % 2 === 0 ? styles.listItem1 : styles.listItem2 }>
+              <View>
+                <Text>
+                  { item }
+                </Text>
+              </View>
             </ListItem>
           )}
           keyExtractor={(item, index) => item + index}
@@ -58,6 +62,16 @@ const styles = StyleSheet.create({
   scrollStyle:{
     width: '100%',
     backgroundColor: 'grey',
+  },
+  listItem1:{
+    backgroundColor: Consts.color3,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  },
+  listItem2:{
+    backgroundColor: Consts.color6,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
   },
 });
 
