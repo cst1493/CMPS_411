@@ -1,12 +1,14 @@
 //@ts-check
 import React, {Component} from 'react';
-import { ListItem, CheckBox } from 'react-native-elements';
+import { ListItem /*, CheckBox*/} from 'react-native-elements';
 import { View, Text, Button, StyleSheet, ScrollView, useColorScheme } from 'react-native';
 import Consts from '../Consts';
 import { AsyncStorage } from 'react-native';
 import { color } from 'react-native-reanimated';
+import CheckBox from '@react-native-community/checkbox';
+import { Circle } from 'react-native-svg';
  
-const buttonColor = Consts.color1;
+const buttonColor = Consts.color4;
 
 //const FavoritesScreen = ({ navigation }) => {}
   //overwriteFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
@@ -23,43 +25,45 @@ class Favorites extends Component
     super(props);
     this.state = {
       //array: [{ id: 10 } { ... }],
-      _obj: {x: false}
+      _list: {x: false},
+      list: false,
+      value: false
     }
   }
   FavoritesScreen = ({ navigation }) => {}
   
-  testButton(){ //TODO checkbox functionality.
-    if (this.state._obj.x == true) {
-      this.state._obj.x = false;
+  changeCheckBox(val){ //TODO checkbox functionality.
+    if (val === true) {
       return false;
-    }
-    else this.state._obj.x = true;
-    return true; 
-  } 
+    } return true; 
+  }
+  setToggleCheckBox(newValue){
+    this.state.value = newValue;
+    return;
+  }
 
   render() 
   {
     return (
       <View style={styles.container }>
-        <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} />
-        {/* <CheckBox checked={this.state.selectedFriendId.includes(temp.id) ? true : false} */}
-        
-        <Text></Text>
+        {/* <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} /> */}
         <ScrollView style={styles.scrollStyle}>
           
           <ListItem>
             <ListItem.Content>
-              <ListItem.Title style={styles.Listing}>{'FOOD ITEM 0'} </ListItem.Title>
-              <CheckBox 
-                //onPress={() => this.testButton()} 
-                onPress={() => this.state._obj.x = this.testButton()} 
-                checked={this.state._obj.x}
-                //checked={this.state.pressed} 
-                //checked={this.state._obj.x = true}
-
-              />
-
+              <View>
+              <ListItem.Title > {/* style={styles.Listing} */}
+                {'FOOD ITEM 0'}
+              </ListItem.Title>
+              
+              </View>
             </ListItem.Content>
+            <Text>on wheel</Text>
+            <CheckBox
+                //npm install @react-native-community/checkbox --save
+                value={this.state.value}
+                onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(this.state.value)})}
+            />
           </ListItem>
 
           <ListItem.Title style={styles.Listing}>{'FOOD ITEM 1'} </ListItem.Title>
@@ -67,7 +71,7 @@ class Favorites extends Component
           {/* {'btn1: decide now. btn2: add to wheel checkbox'} */}
         </ScrollView>
         <View style={[{width: '100%'}]}>
-          <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.props.navigation.navigate('Randomizer')} />
+          <Button title="Spin The Wheel" color={Consts.color3} onPress={() => this.props.navigation.navigate('Randomizer')} />
         </View>
         
       </View>
@@ -137,6 +141,15 @@ async function updateFavoritesList() { //update Consts.favoritesList with stored
     else console.log('favoritesKey is empty.')
   } catch (error) {
       console.log("failed to retrieveData()");
+  } return;
+}
+
+function editWheel(item, checked) {
+  if (checked === true) {
+    addToWheel(item);
+  }
+  if (checked === false) {
+    removeFromWheel(item);
   } return;
 }
 
