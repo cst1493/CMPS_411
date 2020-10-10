@@ -1,40 +1,81 @@
-// @ts-check
+//@ts-check
 import React, {Component} from 'react';
-import { ListItem } from 'react-native-elements';
-import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { ListItem, CheckBox } from 'react-native-elements';
+import { View, Text, Button, StyleSheet, ScrollView, useColorScheme } from 'react-native';
 import Consts from '../Consts';
 import { AsyncStorage } from 'react-native';
+import { color } from 'react-native-reanimated';
  
 const buttonColor = Consts.color1;
 
-const FavoritesScreen = ({ navigation }) => {
+//const FavoritesScreen = ({ navigation }) => {}
   //overwriteFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
   //AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
-  updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
-  console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
+  //updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
+  //console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
   
   //removeFromWheel('Sushi'); addToWheel('Bacon'); //TODO connect functions to a checkbox on the list.
 
-  return (
-    <View style={styles.container}>
-      <Text></Text>
-      <ScrollView style={styles.scrollStyle}>
-        <ListItem.Title style={styles.Listing}>{'FOOD ITEM 1'} </ListItem.Title>
-        <ListItem.Title style={styles.Listing}>{'FOOD ITEM 2'} </ListItem.Title>
-        <ListItem.Title style={styles.Listing}>{'FOOD ITEM 3'} </ListItem.Title>
-        <ListItem.Title style={styles.Listing}>{' '} </ListItem.Title>
-        <ListItem.Title style={styles.Listing}>{'Need to make this label a food item,'} </ListItem.Title>
-        <ListItem.Title style={styles.Listing}>{'and add 2 buttons per listing.'} </ListItem.Title>
-        <ListItem.Title style={styles.Listing}>{'btn1: decide now.'} </ListItem.Title>
-        <ListItem.Title style={styles.Listing}>{'btn2: add to wheel checkbox'} </ListItem.Title>
-      </ScrollView>
-      <View style={[{width: '100%'}]}>
-        <Button title="Spin The Wheel" color={buttonColor} onPress={() => navigation.navigate('Randomizer')} />
+
+class Favorites extends Component 
+{
+  constructor(props){
+    super(props);
+    this.state = {
+      //array: [{ id: 10 } { ... }],
+      _obj: {x: false}
+    }
+  }
+  FavoritesScreen = ({ navigation }) => {}
+  
+  testButton(){ //TODO checkbox functionality.
+    if (this.state._obj.x == true) {
+      this.state._obj.x = false;
+      return false;
+    }
+    else this.state._obj.x = true;
+    return true; 
+  } 
+
+  render() 
+  {
+    return (
+      <View style={styles.container }>
+        <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} />
+        {/* <CheckBox checked={this.state.selectedFriendId.includes(temp.id) ? true : false} */}
+        
+        <Text></Text>
+        <ScrollView style={styles.scrollStyle}>
+          
+          <ListItem>
+            <ListItem.Content>
+              <ListItem.Title style={styles.Listing}>{'FOOD ITEM 0'} </ListItem.Title>
+              <CheckBox 
+                //onPress={() => this.testButton()} 
+                onPress={() => this.state._obj.x = this.testButton()} 
+                checked={this.state._obj.x}
+                //checked={this.state.pressed} 
+                //checked={this.state._obj.x = true}
+
+              />
+
+            </ListItem.Content>
+          </ListItem>
+
+          <ListItem.Title style={styles.Listing}>{'FOOD ITEM 1'} </ListItem.Title>
+          <ListItem.Title style={styles.Listing}>{'FOOD ITEM 2'} </ListItem.Title>
+          {/* {'btn1: decide now. btn2: add to wheel checkbox'} */}
+        </ScrollView>
+        <View style={[{width: '100%'}]}>
+          <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.props.navigation.navigate('Randomizer')} />
+        </View>
+        
       </View>
-      
-    </View>
-  );
+    );
+  }
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -121,4 +162,4 @@ function removeFromWheel(removeItem) {
   }
 }
 
-export default FavoritesScreen;
+export default Favorites;
