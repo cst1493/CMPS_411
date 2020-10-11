@@ -4,7 +4,7 @@ import { ListItem /*, CheckBox*/} from 'react-native-elements';
 import { View, Text, Button, StyleSheet, ScrollView, useColorScheme } from 'react-native';
 import Consts from '../Consts';
 import { AsyncStorage } from 'react-native';
-import { color } from 'react-native-reanimated';
+import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
 import { Circle } from 'react-native-svg';
  
@@ -18,7 +18,8 @@ const buttonColor = Consts.color4;
   
   //removeFromWheel('Sushi'); addToWheel('Bacon'); //TODO connect functions to a checkbox on the list.
 
-
+var arr1 = ['food1', 'food2', 'food3']
+var arr2 = [false, false, false]
 class Favorites extends Component 
 {
   constructor(props){
@@ -32,14 +33,13 @@ class Favorites extends Component
   }
   FavoritesScreen = ({ navigation }) => {}
   
-  changeCheckBox(val){ //TODO checkbox functionality.
-    if (val === true) {
+  changeCheckBox(check, index){ //TODO checkbox functionality.
+    if (check === true) {
+      removeFromWheel(arr1[0]);
       return false;
-    } return true; 
-  }
-  setToggleCheckBox(newValue){
-    this.state.value = newValue;
-    return;
+    } 
+    addToWheel(arr1[0]);
+    return true; 
   }
 
   render() 
@@ -49,20 +49,17 @@ class Favorites extends Component
         {/* <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} /> */}
         <ScrollView style={styles.scrollStyle}>
           
-          <ListItem>
+          <ListItem style={styles.Listing}>
+            <ListItem.Title > {/* style={styles.Listing} */}
+              {arr1[0]}
+            </ListItem.Title>
             <ListItem.Content>
-              <View>
-              <ListItem.Title > {/* style={styles.Listing} */}
-                {'FOOD ITEM 0'}
-              </ListItem.Title>
-              
-              </View>
             </ListItem.Content>
             <Text>on wheel</Text>
             <CheckBox
                 //npm install @react-native-community/checkbox --save
                 value={this.state.value}
-                onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(this.state.value)})}
+                onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(this.state.value, 0)})}
             />
           </ListItem>
 
