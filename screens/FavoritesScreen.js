@@ -17,8 +17,7 @@ const buttonColor = Consts.color4;
   //console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
   
   //removeFromWheel('Sushi'); addToWheel('Bacon'); //TODO connect functions to a checkbox on the list.
-
-var arr1 = ['food1', 'food2', 'food3']
+//var arr1 = ['food1', 'food2', 'food3']
 var arr2 = [false, false, false]
 class Favorites extends Component 
 {
@@ -26,31 +25,50 @@ class Favorites extends Component
     super(props);
     this.state = {
       //array: [{ id: 10 } { ... }],
-      _list: {x: false},
-      list: false,
-      value: false
+      value: [false, false, false],
+      arr1: [{food: 'food1', check: false}, {food: 'food2', check: false}, {food: 'food3', check: false}],
+      index: 0,
     }
+
   }
-  FavoritesScreen = ({ navigation }) => {}
-  
-  changeCheckBox(check, index){ //TODO checkbox functionality.
-    if (check === true) {
-      removeFromWheel(arr1[0]);
+
+  changeCheckBox(isChecked, food){
+    if (isChecked === true) {
+      removeFromWheel(food);
       return false;
     } 
-    addToWheel(arr1[0]);
+    addToWheel(food);
     return true; 
   }
 
-  render() 
+  render()
   {
+    //var i = 0;
+
     return (
       <View style={styles.container }>
         {/* <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} /> */}
         <ScrollView style={styles.scrollStyle}>
-          
-          <ListItem style={styles.Listing}>
-            <ListItem.Title > {/* style={styles.Listing} */}
+          <View>
+              {this.state.arr1.map((element, index) => (
+                <ListItem key={index} style={styles.Listing}> 
+                  <ListItem.Title> 
+                    {element.food}
+                  </ListItem.Title>
+
+                  <Text>on wheel</Text>
+                  <Text>{index}</Text>
+                  <CheckBox
+                    //value={this.state.value[index]}
+                    value={this.state.value[index]}
+                    onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(this.state.value[index], element.food)})}
+                  />
+                </ListItem>
+                )
+              )}
+          </View>
+          {/* <ListItem style={styles.Listing}>
+            <ListItem.Title > {/* style={styles.Listing} *}
               {arr1[0]}
             </ListItem.Title>
             <ListItem.Content>
@@ -61,12 +79,11 @@ class Favorites extends Component
                 value={this.state.value}
                 onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(this.state.value, 0)})}
             />
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem.Title style={styles.Listing}>{'FOOD ITEM 1'} </ListItem.Title>
-          <ListItem.Title style={styles.Listing}>{'FOOD ITEM 2'} </ListItem.Title>
-          {/* {'btn1: decide now. btn2: add to wheel checkbox'} */}
+
         </ScrollView>
+
         <View style={[{width: '100%'}]}>
           <Button title="Spin The Wheel" color={Consts.color3} onPress={() => this.props.navigation.navigate('Randomizer')} />
         </View>
@@ -78,32 +95,9 @@ class Favorites extends Component
 
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollContainer:{
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollStyle:{
-    width: '100%',
-    backgroundColor: 'lightgrey',
-  },
-  Listing: {
-    fontSize: 30,
-    borderBottomWidth: 3,
-    textAlign: 'left',
-    backgroundColor: buttonColor,
-    flexDirection: 'row',
-    paddingLeft: 10,
-    paddingTop: 5,
-  },
-  goToWheel:{width: '100%'}
-});
+
+
+
 
 
 
@@ -141,14 +135,14 @@ async function updateFavoritesList() { //update Consts.favoritesList with stored
   } return;
 }
 
-function editWheel(item, checked) {
+/*function editWheel(item, checked) {
   if (checked === true) {
     addToWheel(item);
   }
   if (checked === false) {
     removeFromWheel(item);
   } return;
-}
+}*/
 
 function addToWheel(addItem) {
   if (Consts.wheelFoods.length > 11) { return } //too many items for the wheel.
@@ -171,5 +165,32 @@ function removeFromWheel(removeItem) {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scrollContainer:{
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scrollStyle:{
+    width: '100%',
+    backgroundColor: 'lightgrey',
+  },
+  Listing: {
+    fontSize: 30,
+    borderBottomWidth: 3,
+    textAlign: 'left',
+    backgroundColor: buttonColor,
+    flexDirection: 'row',
+    paddingLeft: 10,
+    paddingTop: 5,
+  },
+  goToWheel:{width: '100%'}
+});
 
 export default Favorites;
