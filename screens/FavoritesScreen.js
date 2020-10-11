@@ -8,43 +8,58 @@ import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
 import { Circle } from 'react-native-svg';
  
-const buttonColor = Consts.color4;
+const buttonColor = Consts.color3;
+const listColor = Consts.color1;
 
-//const FavoritesScreen = ({ navigation }) => {}
-  //overwriteFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
-  //AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
-  //updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
-  //console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
+//overwriteFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
+
+//AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
+//updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
+//console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
   
-  //removeFromWheel('Sushi'); addToWheel('Bacon'); //TODO connect functions to a checkbox on the list.
-//var arr1 = ['food1', 'food2', 'food3']
-var arr2 = [false, false, false]
+//removeFromWheel('Sushi'); addToWheel('Bacon'); //TODO connect functions to a checkbox on the list.
+
+Consts.wheelFoods=[]
 class Favorites extends Component 
 {
   constructor(props){
     super(props);
     this.state = {
-      //array: [{ id: 10 } { ... }],
-      value: [false, false, false],
-      arr1: [{food: 'food1', check: false}, {food: 'food2', check: false}, {food: 'food3', check: false}],
-      index: 0,
+      //TODO replace 'food' with an array or some other way to get a copy of the favoritesList.
+      arr1: [ {food: Consts.favoritesList[0]}, {food: Consts.favoritesList[1]}, {food: Consts.favoritesList[2]} ,{food: Consts.favoritesList[3]},
+      {food: Consts.favoritesList[4]}, {food: Consts.favoritesList[5]},{food: Consts.favoritesList[6]}, {food: Consts.favoritesList[7]} ],
+      value1: [false],
     }
-
+  }
+  decideNow() { //TODO finish button with yes/no confirm and save to history.
+    alert("TODO added to history?");
+    return
+  }
+  goToWheel() { //TODO count true checkboxes and create alert on deny.
+    //if (totalChecks < 2) { deny access to the wheel }
+    return
   }
 
-  changeCheckBox(isChecked, food){
-    if (isChecked === true) {
+  changeCheckBox(index, food) {
+    if (this.state.value1[index] === true) {
       removeFromWheel(food);
+      this.state.value1[index] = false;
       return false;
-    } 
+    }
     addToWheel(food);
+    this.state.value1[index] = true;
     return true; 
+  }
+  getValue(index) { //TODO Do I still need this???
+    //this.state.value1.push(false); //console.log(this.state.value1.length)
+    return this.state.value1[index];
   }
 
   render()
   {
-    //var i = 0;
-
+    for(var i = 0; i < Consts.favoritesList.length; i++) { //TODO add from array instead of type arr1.food
+      //this.state.arr1.push(Consts.favoritesList[i]);
+    }
     return (
       <View style={styles.container }>
         {/* <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} /> */}
@@ -55,37 +70,21 @@ class Favorites extends Component
                   <ListItem.Title> 
                     {element.food}
                   </ListItem.Title>
-
-                  <Text>on wheel</Text>
-                  <Text>{index}</Text>
+                  <Button title="Decide Now" color={buttonColor} onPress={() => this.decideNow()} />
+                  {/* <Text>{index}</Text> */}
                   <CheckBox
-                    //value={this.state.value[index]}
-                    value={this.state.value[index]}
-                    onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(this.state.value[index], element.food)})}
+                    value={this.state.value1[index]}
+                    onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(index, element.food)})}
                   />
+                  <Text>on wheel</Text>
                 </ListItem>
                 )
               )}
           </View>
-          {/* <ListItem style={styles.Listing}>
-            <ListItem.Title > {/* style={styles.Listing} *}
-              {arr1[0]}
-            </ListItem.Title>
-            <ListItem.Content>
-            </ListItem.Content>
-            <Text>on wheel</Text>
-            <CheckBox
-                //npm install @react-native-community/checkbox --save
-                value={this.state.value}
-                onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(this.state.value, 0)})}
-            />
-          </ListItem> */}
-
-
         </ScrollView>
 
         <View style={[{width: '100%'}]}>
-          <Button title="Spin The Wheel" color={Consts.color3} onPress={() => this.props.navigation.navigate('Randomizer')} />
+          <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.props.navigation.navigate('Randomizer')} />
         </View>
         
       </View>
@@ -95,16 +94,10 @@ class Favorites extends Component
 
 
 
-
-
-
-
-
-
 const favoritesKey = 'favorites'; //key is used to find, store and replace favorites data.
 async function overwriteFavoritesList(populateDummyData) { //overwrite current Consts.favoritesList.
   if (populateDummyData == true) {
-    const testFavorites = ['Chicken', 'Fish', 'Subway', 'Pizza'    ];/*
+    const testFavorites = ['Chicken', 'Fish', 'Subway', 'Pizza'
     , 'Salad', 'Shrimp', 'China Buffet', 'Popeyes', 'BK', 'Canes', 'Burgers', 'Fried Rice', 'Tacos', 'Pancakes', 'Eggs']; //*/
     Consts.favoritesList = testFavorites;
   }
@@ -134,15 +127,6 @@ async function updateFavoritesList() { //update Consts.favoritesList with stored
       console.log("failed to retrieveData()");
   } return;
 }
-
-/*function editWheel(item, checked) {
-  if (checked === true) {
-    addToWheel(item);
-  }
-  if (checked === false) {
-    removeFromWheel(item);
-  } return;
-}*/
 
 function addToWheel(addItem) {
   if (Consts.wheelFoods.length > 11) { return } //too many items for the wheel.
@@ -185,7 +169,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     borderBottomWidth: 3,
     textAlign: 'left',
-    backgroundColor: buttonColor,
+    backgroundColor: listColor,
     flexDirection: 'row',
     paddingLeft: 10,
     paddingTop: 5,

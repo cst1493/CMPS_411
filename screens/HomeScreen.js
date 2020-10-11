@@ -1,7 +1,7 @@
-// @ts-nocheck
+// @ts-check
 import React from 'react';
 import { render } from 'react-dom';
-import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Button, StyleSheet, ImageBackground, AsyncStorage } from 'react-native';
 import { TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import Consts from '../Consts';
 
@@ -16,8 +16,11 @@ import retrieveData from '../localStorage';
 storeData;
 console.log(retrieveData);
 
+
 const HomeScreen = ({ navigation }) => {
+  updateFavoritesList();
   return (
+    // @ts-ignore
     <ImageBackground style={styles.image} source={ require('../img/bg1.png') }>
     
       <View style={styles.container}>
@@ -43,6 +46,21 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 export default HomeScreen;
+
+const favoritesKey = 'favorites'; 
+async function updateFavoritesList() { //update Consts.favoritesList with stored data. Move to App.js???
+  try {
+    let temp = await AsyncStorage.getItem(favoritesKey); //got json storage file with array info.
+    if (temp !== null) { //if data found
+      Consts.favoritesList = await AsyncStorage.getItem(favoritesKey).then(require => JSON.parse(require))
+      .catch(error => console.log('retrieve error'));
+      //console.log(Consts.favoritesList);
+    }
+    else console.log('favoritesKey is empty.')
+  } catch (error) {
+      console.log("failed to retrieveData()");
+  } return;
+}
 
 const styles = StyleSheet.create({
   container: {
