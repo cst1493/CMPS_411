@@ -22,7 +22,7 @@ class Wheel extends Component
     return(
       <View style={styles.container}>
         <WheelOfFortune
-          duration={1000} //duration={5000}
+          duration={5000} //duration={5000}
           onRef={ref => (this.child = ref)} 
           rewards={ Consts.wheelFoods }
           knobSize={26}
