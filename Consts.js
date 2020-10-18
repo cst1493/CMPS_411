@@ -7,13 +7,14 @@ const color1 = '#E6BC05'; const color2 = '#E61B00'; const color3 = '#FF790B'; co
 const color6 = '#FFA02C';
 const historyKey = 'history';
 
-var wheelFoods = ['Pizza','Burgers','Tacos','Canes', 'Popeyes', 'Sushi'];
+var wheelFoods = ['empty'];
+var totalChecks = 0; //keeping the counter with wheelFoods so they reset at the same time.  2 checkboxes minimum to go to wheel.
 var favoritesList = ['empty'];
 var historyList = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9'];
 var winner = '';
 
 export default {
-    wheelFoods,
+    wheelFoods, totalChecks,
     favoritesList,
     historyList, historyKey,
     winner,

@@ -15,76 +15,85 @@ const listColor = Consts.color1;
 
 //AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
 //updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
-//console.log('Consts.favoritesList[0] = ' + Consts.favoritesList[0]); //TODO add load delay or move this to App.js???
-  
-//removeFromWheel('Sushi'); addToWheel('Bacon'); //TODO connect functions to a checkbox on the list.
 
-Consts.wheelFoods=[]
+Consts.wheelFoods=[];
+Consts.totalChecks = 0;
 class Favorites extends Component 
 {
   constructor(props){
     super(props);
     this.state = {
-      //TODO replace 'food' with an array or some other way to get a copy of the favoritesList.
-      arr1: [ {food: Consts.favoritesList[0]}, {food: Consts.favoritesList[1]}, {food: Consts.favoritesList[2]} ,{food: Consts.favoritesList[3]},
-      {food: Consts.favoritesList[4]}, {food: Consts.favoritesList[5]},{food: Consts.favoritesList[6]}, {food: Consts.favoritesList[7]} ],
-      value1: [false],
+      checkbox: [false],
     }
   }
   decideNow() { //TODO finish button with yes/no confirm and save to history.
     alert("TODO added to history?");
-    return
+    return;
   }
-  goToWheel() { //TODO count true checkboxes and create alert on deny.
-    //if (totalChecks < 2) { deny access to the wheel }
-    return
+  goToWheel() { //navigate if 2 or more selected foods.
+    if (Consts.totalChecks < 2) { 
+      alert("Must select 2 or more items to randomize."); //TODO replace with: https://docs.nativebase.io/Components.html#toast-type-headref 
+      return;
+    }
+    this.props.navigation.navigate('Randomizer');
+    return;
   }
 
   changeCheckBox(index, food) {
-    if (this.state.value1[index] === true) {
+    if (this.state.checkbox[index] === true) {
       removeFromWheel(food);
-      this.state.value1[index] = false;
+      this.state.checkbox[index] = false;
       return false;
-    }
+    } //else
     addToWheel(food);
-    this.state.value1[index] = true;
+    this.state.checkbox[index] = true;
     return true; 
   }
-  getValue(index) { //TODO Do I still need this???
-    //this.state.value1.push(false); //console.log(this.state.value1.length)
-    return this.state.value1[index];
+  
+  addTempFood(){
+    //TODO add functionality to add a temporary food item by letting the user type in a food name.
+    alert("TODO: add functionality here");
+    return;
   }
 
   render()
   {
-    for(var i = 0; i < Consts.favoritesList.length; i++) { //TODO add from array instead of type arr1.food
-      //this.state.arr1.push(Consts.favoritesList[i]);
+    //if coming from the homepage, reset all checkboxes back to false and clear the wheel.
+    if(this.state.checkbox.length < Consts.favoritesList.length) {
+      Consts.wheelFoods = []; Consts.totalChecks = 0;
+      while(this.state.checkbox.length < Consts.favoritesList.length) {
+        this.state.checkbox.push(false);
+      }
     }
     return (
       <View style={styles.container }>
-        {/* <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} /> */}
         <ScrollView style={styles.scrollStyle}>
+
+          <View style={[{width: '100%'}]}>
+            <Button title="Add Temporary Food To Wheel" color={buttonColor} onPress={() => this.addTempFood()} />
+          </View>
+
           <View>
-              {this.state.arr1.map((element, index) => (
-                <ListItem key={index} style={styles.Listing}> 
-                  <ListItem.Title> 
-                    {element.food}
-                  </ListItem.Title>
-                  <Button title="Decide Now" color={buttonColor} onPress={() => this.decideNow()} />
-                  {/* <Text>{index}</Text> */}
-                  <CheckBox
-                    value={this.state.value1[index]}
-                    onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(index, element.food)})}
-                  />
-                  <Text>on wheel</Text>
-                </ListItem>
-                )
-              )}
+            {/* <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} /> */}
+            {(Consts.favoritesList).map((element, index) => (
+              <ListItem key={index} style={styles.Listing}> 
+                <ListItem.Title> 
+                  {element}
+                </ListItem.Title>
+                <Button title="Decide Now" color={buttonColor} onPress={() => this.decideNow()} />
+                <CheckBox
+                  value={this.state.checkbox[index]}
+                  onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(index, element)})}
+                />
+                <Text>on wheel</Text>
+              </ListItem>
+              )
+            )}
           </View>
         </ScrollView>
 
         <View style={[{width: '100%'}]}>
-          <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.props.navigation.navigate('Randomizer')} />
+          <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.goToWheel()} />
         </View>
         
       </View>
@@ -135,7 +144,9 @@ function addToWheel(addItem) {
       return; //duplicate found. do nothing.
     }
   }
-  Consts.wheelFoods.push(addItem); return;
+  Consts.wheelFoods.push(addItem);
+  Consts.totalChecks++;
+  return;
 }
 function removeFromWheel(removeItem) {
   var arr = Consts.wheelFoods;
@@ -145,6 +156,7 @@ function removeFromWheel(removeItem) {
         arr.pop() //if this is the last item, don't set to anything.
       } else { arr[i] = arr.pop() }
       Consts.wheelFoods = arr;
+      Consts.totalChecks--;
       return;
     }
   }
