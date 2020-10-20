@@ -14,11 +14,11 @@ import retrieveData from '../localStorage';
 //var favList = [];
 //favList = localStorage.retrieveData;
 storeData;
-console.log(retrieveData);
 
 
 const HomeScreen = ({ navigation }) => {
   updateFavoritesList();
+  PullFromStorage();
   return (
     // @ts-ignore
     <ImageBackground style={styles.image} source={ require('../img/bg1.png') }>
@@ -54,11 +54,24 @@ async function updateFavoritesList() { //update Consts.favoritesList with stored
     if (temp !== null) { //if data found
       Consts.favoritesList = await AsyncStorage.getItem(favoritesKey).then(require => JSON.parse(require))
       .catch(error => console.log('retrieve error'));
-      //console.log(Consts.favoritesList);
     }
     else console.log('favoritesKey is empty.')
   } catch (error) {
       console.log("failed to retrieveData()");
+  } return;
+}
+
+const key = Consts.historyKey;
+async function PullFromStorage() { //update Consts.Name with stored data.
+  try {
+    let temp = await AsyncStorage.getItem(key); //got json storage file with array info.
+    if (temp !== null) { //if data found
+        Consts.historyList = await AsyncStorage.getItem(key).then(require => JSON.parse(require))
+        .catch(error => console.log('retrieve error'));
+    }
+    else console.log('favoritesKey is empty.')
+  } catch (error) {
+        console.log("failed to retrieveData()");
   } return;
 }
 

@@ -6,17 +6,18 @@ import { Component, useState } from "react";
 const color1 = '#E6BC05'; const color2 = '#E61B00'; const color3 = '#FF790B'; const color4 = '#FCFCFC'; const color5 = '#000000';
 const color6 = '#FFA02C';
 const historyKey = 'history';
+const maxHistoryLength = 12;
 
 var wheelFoods = ['empty'];
 var totalChecks = 0; //keeping the counter with wheelFoods so they reset at the same time.  2 checkboxes minimum to go to wheel.
 var favoritesList = ['empty'];
-var historyList = ['item0', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9'];
+var historyList = [''];
 var winner = '';
 
 export default {
     wheelFoods, totalChecks,
     favoritesList,
-    historyList, historyKey,
+    historyList, historyKey, maxHistoryLength,
     winner,
     color1, color2, color3, color4, color5, color6
 }

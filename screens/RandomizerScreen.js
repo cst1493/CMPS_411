@@ -49,6 +49,11 @@ async function BorrowValue(value)
 }
 
 function AddToHistory(newItem) { //newest item set to historyList[0]
+  if (Consts.historyList.length < Consts.maxHistoryLength) {
+    Consts.historyList.push('temp');
+  } else if (Consts.historyList.length > Consts.maxHistoryLength) {
+    Consts.historyList.pop();
+  }
   for(var i = (Consts.historyList.length-1); i > 0; i--){
     Consts.historyList[i] = Consts.historyList[i-1];
   }
