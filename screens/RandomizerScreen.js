@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { View, Text, Button, StyleSheet, AsyncStorage } from 'react-native';
 import { getEnforcing } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import Consts from "../Consts";
+import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
 // @ts-ignore
 import WheelOfFortune from 'react-native-wheel-of-fortune';
 
@@ -42,33 +43,10 @@ class Wheel extends Component
 async function BorrowValue(value)
 {
   Consts.winner = value.toString();
-  AddToHistory(value.toString());
-  await PushToStorage();
+  AddToHistoryList(value.toString());
+  await PushHistoryToStorage();
   alert('The winner is: ' + Consts.historyList[0]); //TODO real winner alert    https://docs.nativebase.io/Components.html#toast-type-headref
   return value //gets the wheel result.
-}
-
-function AddToHistory(newItem) { //newest item set to historyList[0]
-  if (Consts.historyList.length < Consts.maxHistoryLength) {
-    Consts.historyList.push('temp');
-  } else if (Consts.historyList.length > Consts.maxHistoryLength) {
-    Consts.historyList.pop();
-  }
-  for(var i = (Consts.historyList.length-1); i > 0; i--){
-    Consts.historyList[i] = Consts.historyList[i-1];
-  }
-  Consts.historyList[0] = newItem;
-}
-
-const key = Consts.historyKey;
-async function PushToStorage() { //overwrite current Consts.favoritesList.
-  try {
-    await AsyncStorage.removeItem(key); //reset old key to null (replaces file).
-    AsyncStorage.setItem(key, JSON.stringify(Consts.historyList));
-  } catch (error) {
-    console.log('error on async storeData()');
-  }
-  return
 }
 
 const styles = StyleSheet.create({

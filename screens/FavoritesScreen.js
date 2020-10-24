@@ -1,20 +1,22 @@
 //@ts-check
 import React, {Component} from 'react';
-import { ListItem /*, CheckBox*/} from 'react-native-elements';
+import { ListItem , Icon} from 'react-native-elements';
 import { View, Text, Button, StyleSheet, ScrollView, useColorScheme } from 'react-native';
 import Consts from '../Consts';
 import { AsyncStorage } from 'react-native';
 import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
+import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
 import { Circle } from 'react-native-svg';
  
 const buttonColor = Consts.color3;
+const trashButtonColor = '#777777';
 const listColor = Consts.color1;
 
-//overwriteFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
+//setFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
 
 //AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
-//updateFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
+//getFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
 
 Consts.wheelFoods=[];
 Consts.totalChecks = 0;
@@ -25,10 +27,6 @@ class Favorites extends Component
     this.state = {
       checkbox: [false],
     }
-  }
-  decideNow() { //TODO finish button with yes/no confirm and save to history.
-    alert("TODO added to history?");
-    return;
   }
   goToWheel() { //navigate if 2 or more selected foods.
     if (Consts.totalChecks < 2) { 
@@ -66,33 +64,51 @@ class Favorites extends Component
       }
     }
     return (
-      <View style={styles.container }>
-        <ScrollView style={styles.scrollStyle}>
+      <View style={{flex: 1}}>
+        <ScrollView style={styles.scrollView}>
 
-          <View style={[{width: '100%'}]}>
+          <View style={styles.barButtons}>
             <Button title="Add Temporary Food To Wheel" color={buttonColor} onPress={() => this.addTempFood()} />
           </View>
 
           <View>
-            {/* <CheckBox onPress={() => this.testButton()} checked={this.state.pressed} /> */}
             {(Consts.favoritesList).map((element, index) => (
-              <ListItem key={index} style={styles.Listing}> 
-                <ListItem.Title> 
-                  {element}
-                </ListItem.Title>
-                <Button title="Decide Now" color={buttonColor} onPress={() => this.decideNow()} />
-                <CheckBox
-                  value={this.state.checkbox[index]}
-                  onValueChange={( x_ ) => this.setState({value: this.changeCheckBox(index, element)})}
-                />
-                <Text>on wheel</Text>
+              <ListItem key={index} containerStyle={styles.Listing}>
+
+                <View style={styles.LI_Section1}>
+                  <Icon
+                    reverse //reactnativeelements.com/docs/icon/
+                    type='feather' //icon library
+                    name='trash-2' //icon list: feathericons.com
+                    size={15}
+                    onPress={() => deleteFavorite(element, index)}
+                    color= {trashButtonColor}
+                  />
+                </View>
+
+                <View style={styles.LI_Section2}>
+                  <ListItem.Title> { element } </ListItem.Title>
+                </View>
+
+                <View style={styles.LI_Section3}> 
+                  <Button title="Decide Now" color={buttonColor} onPress={() => decideNowButton(element)} />
+                </View>
+
+                <View style={styles.LI_Section4}>
+                  <CheckBox
+                    value={this.state.checkbox[index]}
+                    onValueChange={( ) => this.setState({value: this.changeCheckBox(index, element)})}
+                  />
+                  <Text>on wheel</Text>
+                </View>
+
               </ListItem>
               )
             )}
           </View>
         </ScrollView>
 
-        <View style={[{width: '100%'}]}>
+        <View style={styles.barButtons}>
           <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.goToWheel()} />
         </View>
         
@@ -101,10 +117,23 @@ class Favorites extends Component
   }
 };
 
+function decideNowButton(food) {
+  alert("added to history?"); //TODO finish button with yes/no confirm and save to history.
+  var userConfirmed = false;
+  //TODO user confirm message
+  if (true) { //add item to history
+    AddToHistoryList(food);
+    PushHistoryToStorage();
+  }
+  return;
+}
 
+function deleteFavorite(foodName, index) { //TODO
+  alert('Are you sure you want to delete ' + foodName + index + ' from your favorites?');
+}
 
 const favoritesKey = 'favorites'; //key is used to find, store and replace favorites data.
-async function overwriteFavoritesList(populateDummyData) { //overwrite current Consts.favoritesList.
+async function setFavoritesList(populateDummyData) { //overwrite current Consts.favoritesList.
   if (populateDummyData == true) {
     const testFavorites = ['Chicken', 'Fish', 'Subway', 'Pizza'
     , 'Salad', 'Shrimp', 'China Buffet', 'Popeyes', 'BK', 'Canes', 'Burgers', 'Fried Rice', 'Tacos', 'Pancakes', 'Eggs']; //*/
@@ -123,7 +152,7 @@ async function overwriteFavoritesList(populateDummyData) { //overwrite current C
   return
 }
 
-async function updateFavoritesList() { //update Consts.favoritesList with stored data. Move to App.js???
+async function getFavoritesList() { //update Consts.favoritesList with stored data. Move to App.js???
   try {
     let temp = await AsyncStorage.getItem(favoritesKey); //got json storage file with array info.
     if (temp !== null) { //if data found
@@ -163,30 +192,38 @@ function removeFromWheel(removeItem) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollContainer:{
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollStyle:{
+  scrollView:{
     width: '100%',
     backgroundColor: 'lightgrey',
   },
   Listing: {
-    fontSize: 30,
-    borderBottomWidth: 3,
-    textAlign: 'left',
+    borderTopWidth: 2,
     backgroundColor: listColor,
-    flexDirection: 'row',
-    paddingLeft: 10,
-    paddingTop: 5,
+    borderColor: 'black',
   },
-  goToWheel:{width: '100%'}
+  LI_Section1:{
+    width: '8%',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  LI_Section2:{
+    width: '35%',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  LI_Section3:{
+    width: '25%',
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  LI_Section4:{
+    width: '25%',
+    justifyContent: "flex-start",
+  },
+  barButtons: {
+    width: '100%',
+    fontSize: 20,
+  },
 });
 
 export default Favorites;
