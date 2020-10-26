@@ -76,6 +76,31 @@ async function MoveToBotOfList(favorites, latestMeal) {
     }
 }
 
+export function AddToHistoryList(newItem) 
+{
+    if (Consts.historyList.length < Consts.maxHistoryLength) {
+      Consts.historyList.push('temp');
+    } else if (Consts.historyList.length > Consts.maxHistoryLength) {
+      Consts.historyList.pop();
+    }
+    for(var i = (Consts.historyList.length-1); i > 0; i--){
+      Consts.historyList[i] = Consts.historyList[i-1];
+    }
+    Consts.historyList[0] = newItem;
+}
+export async function PushHistoryToStorage() { //overwrite current Consts.favoritesList.
+    const key = Consts.historyKey;
+    try {
+        await AsyncStorage.removeItem(key); //reset old key to null (replaces file).
+        AsyncStorage.setItem(key, JSON.stringify(Consts.historyList));
+    }   catch (error) {
+    console.log('error on async storeData()');
+  }
+  return
+}
+
+
+
 export default {
     favoritesArray, localStorage,
 }

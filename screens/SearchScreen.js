@@ -2,6 +2,16 @@
 import React,{Component} from 'react';
 import { View, Text, Button, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import {SearchBar, ListItem} from 'react-native-elements';
+const searchItems = [ //77 items
+'Asparagus', 'Black Beans', 'Bagels', 'Baked Beans', 'BBQ', 'Biscuits', 'Burittos', 'Carne Asada', 'Chicken', 'Chinese', 
+'Catfish', 'Crab', ' Chickpeas', 'Chili', 'Chimichanga', 'Dumplings', 'Donuts', 'Eggs', 'Enchiladas', 'Egg Rolls', 
+'Fajitas', 'Fish', 'Fishsticks', 'French dip', 'French toast', ' Fried Rice', 'Green Beans', 'Guancamole', 'Gumbo', 'Ham', 
+'Hamburger', 'Hashbrowns', 'Hotdogs', 'Ice Cream', 'Indian', 'Italian', 'Jambalaya', 'kabobs', 'lobster', 'Lasagna', 
+'Mac & Cheese', 'Meatballs', 'Meatloaf', 'Mexican', 'Nachos', 'Noodles', 'Oatmeal', 'Omelet', 'Oysters', 'Pancakes', 
+'Pasta', 'PB&J', 'Peas', 'Pizza', 'Pork Chops', 'Potatos', 'Quesadilla', 'Rice', 'Rotini', 'Salad', 
+'Salmon', 'Sandwich', 'Sausage', 'Smoothie', 'Soup', 'Spaghetti', 'Steak', 'Stir Fry', 'Sushi', 'Tacos', 
+'Tilapia', 'Tofu', 'Tuna', 'Turkey', 'Waffles', 'Wings', 'Wrap'
+];
 
 class SearchScreen extends Component {
   constructor(props) {
