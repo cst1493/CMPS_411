@@ -4,6 +4,10 @@ import { View, Text, Button, StyleSheet, ScrollView, FlatList, AsyncStorage } fr
 import { ListItem } from 'react-native-elements';
 import Consts from '../Consts';
 
+const headerColor = Consts.color3;
+const listColor1 = Consts.color1;
+const listColor2 = Consts.color2;
+
 class History extends Component{
   render() {
     return(
@@ -35,12 +39,13 @@ const styles = StyleSheet.create({
     margin: 'auto',
     flex: 1,
     width: '100%',
-    backgroundColor: Consts.color5,
+    backgroundColor: 'black',
   },
   title: {
     padding: 18,
-    borderWidth: 4,
-    backgroundColor: Consts.color1,
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    backgroundColor: headerColor,
     textAlign: 'center',
     fontSize: 30,
   },
@@ -49,12 +54,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
   },
   listItem1:{
-    backgroundColor: Consts.color3,
+    backgroundColor: listColor1,
     borderBottomWidth: 1,
     borderBottomColor: 'black',
   },
   listItem2:{
-    backgroundColor: Consts.color6,
+    backgroundColor: listColor2,
     borderBottomWidth: 1,
     borderBottomColor: 'black',
   },

@@ -10,8 +10,9 @@ import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
 import { Circle } from 'react-native-svg';
  
 const buttonColor = Consts.color3;
-const trashButtonColor = '#777777';
 const listColor = Consts.color1;
+const trashButtonColor = '#777777';
+const maxWheelItems = 11;
 
 //setFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
 
@@ -167,7 +168,7 @@ async function getFavoritesList() { //update Consts.favoritesList with stored da
 }
 
 function addToWheel(addItem) {
-  if (Consts.wheelFoods.length > 11) { return } //too many items for the wheel.
+  if (Consts.wheelFoods.length > maxWheelItems) { return } //too many items for the wheel.
   for (var i = 0; i < Consts.wheelFoods.length; i++) {
     if (Consts.wheelFoods[i] == addItem){
       return; //duplicate found. do nothing.
