@@ -9,6 +9,7 @@ import HistoryScreen from './screens/HistoryScreen';
 import SearchScreen from './screens/SearchScreen';
 import RandomizerScreen from './screens/RandomizerScreen';
 
+//Navigation --> https://www.robinwieruch.de/react-native-navigation
 const RootStack = createStackNavigator();
  
 const App = () => {
@@ -25,19 +26,3 @@ const App = () => {
   );
 };
 export default App;
-
-/*
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 40,
-  },
-});
-*/

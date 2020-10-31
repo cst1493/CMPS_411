@@ -8,16 +8,15 @@ import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
 import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
 import { Circle } from 'react-native-svg';
- 
+
+//RECOMMENDED TO RUN PushFavoritesToStorage(true) ONCE TO STORE DUMMY DATA //
+//import { PushFavoritesToStorage } from '../localStorage';
+//PushFavoritesToStorage(true);
+
 const buttonColor = Consts.color3;
 const listColor = Consts.color1;
 const trashButtonColor = '#777777';
 const maxWheelItems = 11;
-
-//setFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
-
-//AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
-//getFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
 
 Consts.wheelFoods=[];
 Consts.totalChecks = 0;
@@ -133,39 +132,6 @@ function deleteFavorite(foodName, index) { //TODO
   alert('Are you sure you want to delete ' + foodName + index + ' from your favorites?');
 }
 
-const favoritesKey = 'favorites'; //key is used to find, store and replace favorites data.
-async function setFavoritesList(populateDummyData) { //overwrite current Consts.favoritesList.
-  if (populateDummyData == true) {
-    const testFavorites = ['Chicken', 'Fish', 'Subway', 'Pizza'
-    , 'Salad', 'Shrimp', 'China Buffet', 'Popeyes', 'BK', 'Canes', 'Burgers', 'Fried Rice', 'Tacos', 'Pancakes', 'Eggs']; //*/
-    Consts.favoritesList = testFavorites;
-  }
-  try {
-    await AsyncStorage.removeItem(favoritesKey); //reset old key to null (replaces file).
-    AsyncStorage.setItem(favoritesKey, JSON.stringify(Consts.favoritesList));
-    /*try { //looks at newly stored data
-      console.log('storing data...');
-      var x = await AsyncStorage.getItem(favoritesKey); console.log(x);
-    } catch{'err'}*/
-  } catch (error) {
-    console.log('error on async storeData()');
-  }
-  return
-}
-
-async function getFavoritesList() { //update Consts.favoritesList with stored data. Move to App.js???
-  try {
-    let temp = await AsyncStorage.getItem(favoritesKey); //got json storage file with array info.
-    if (temp !== null) { //if data found
-      Consts.favoritesList = await AsyncStorage.getItem(favoritesKey).then(require => JSON.parse(require))
-      .catch(error => console.log('retrieve error'));
-      //console.log(Consts.favoritesList);
-    }
-    else console.log('favoritesKey is empty.')
-  } catch (error) {
-      console.log("failed to retrieveData()");
-  } return;
-}
 
 function addToWheel(addItem) {
   if (Consts.wheelFoods.length > maxWheelItems) { return } //too many items for the wheel.

@@ -1,4 +1,4 @@
-// @ts-check
+//@ts-check
 import React,{Component} from 'react';
 import { View, Text, Button, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import {SearchBar, ListItem} from 'react-native-elements';
@@ -24,25 +24,9 @@ class SearchScreen extends Component {
     super(props);
 
     this.state = {
-      loading: false,      
-      data: [
-        {
-          name: "Cheeseburger",
-        },
-        {
-          name: "Pizza",
-        },
-        {
-          name: "Macaroni and Cheese",
-        },
-        {
-          name: "Chicken Sandwich",
-        },
-        {
-          name: "Burrito",
-        },
-      ],      
-      error: null,  
+      loading: false,
+      data: searchItems,
+      error: null,
     };
     this.foodArray = this.state.data;
   }
@@ -51,11 +35,9 @@ searchFilterFunction = text => {
   this.setState({
     value: text,
   });
-
-  const newData = this.foodArray.filter(item => {
-    const itemData = `${item.name.toUpperCase()}`;
+  const newData = searchItems.filter(item => {
+    const itemData = `${item.toUpperCase()}`;
     const textData = text.toUpperCase();
-
     return itemData.indexOf(textData) > -1;
   });
 
@@ -63,6 +45,7 @@ searchFilterFunction = text => {
     data: newData,
   });
 };
+
 renderHeader = () => {
   return (
     <SearchBar
@@ -73,7 +56,6 @@ renderHeader = () => {
       autoCorrect={false}
       value={this.state.value}
       />
-
   );
 };
   render = () => {
@@ -84,7 +66,7 @@ renderHeader = () => {
         </View>
       );
     }
-  
+  //if (this.state.data == null) {return (this.state.data = searchItems)}
   return (
     <View style={styles.container}>
     <ListItem  containerStyle={styles.Listing}>
@@ -97,7 +79,7 @@ renderHeader = () => {
     </ListItem>
 
       <FlatList
-        data = {searchItems}
+        data = {this.state.data} //rendering data makes weird error where you can navigate to all pages...  TODO
         renderItem={({ item, index }) => (
           <ListItem key={index} containerStyle={styles.Listing}>
             <View style={styles.LI_Section1}>
