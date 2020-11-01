@@ -1,8 +1,9 @@
 //@ts-check
 import React,{Component} from 'react';
-import { View, Text, Button, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import {SearchBar, ListItem} from 'react-native-elements';
 import { Line } from 'react-native-svg';
+import { PushFavoritesToStorage } from '../localStorage';
 import Consts from '../Consts';
 const searchItems = [ //77 items
 'Asparagus', 'Black Beans', 'Bagels', 'Baked Beans', 'BBQ', 'Biscuits', 'Burittos', 'Carne Asada', 'Chicken', 'Chinese', 
@@ -70,14 +71,14 @@ renderHeader = () => {
   //if (this.state.data == null) {return (this.state.data = searchItems)}
   return (
     <View style={styles.container}>
-    <ListItem  containerStyle={styles.Listing}>
-      <View style={styles.topButtons}>
-        <Button title="Search Nearby Restaurants" color={barButtonColor} onPress={() => addToFavorites(null)} />
-      </View>
-      <View style={styles.topButtons}>
-        <Button title="Add Food Myself" color={barButtonColor} onPress={() => addToFavorites(null)} />
-      </View>
-    </ListItem>
+      <ListItem  containerStyle={styles.Listing}>
+        <View style={styles.topButtons}>
+          <Button title="Search Nearby Restaurants" color={barButtonColor} onPress={ () => addByUserInput() }/>
+        </View>
+        <View style={styles.topButtons}>
+          <Button title="Add Food Myself" color={barButtonColor} onPress={ () => addByUserInput() }/>
+        </View>
+      </ListItem>
 
       <FlatList
         data = {this.state.data} //rendering data makes weird error where you can navigate to all pages...  TODO
@@ -88,7 +89,7 @@ renderHeader = () => {
             </View>
 
             <View style={styles.LI_Section2}> 
-              <Button title="Add To Favorites" color={buttonColor} onPress={() => addToFavorites(item)} />
+              <Button title="Add To Favorites" color={buttonColor} onPress={() => addToFavoritesBtn(item)} />
             </View>
 
           </ListItem>
@@ -96,22 +97,42 @@ renderHeader = () => {
         keyExtractor={(item, index) => item + index}
         //ItemSeparatorComponent={this.renderSeparator} //replaced with ListItems
         ListHeaderComponent={this.renderHeader}
-        />
-
-      <View style={styles.barButtons}>
-        <Button title="Save Changes" color={barButtonColor} onPress={() => this.saveChanges()}/>
-      </View>
+      />
     </View>
   );
   };
-saveChanges() {
-  //Save to favorites TODO
-  this.props.navigation.navigate('Home');
-}
 }
 
-function addToFavorites(newFav) { //TODO
-  alert('Replace with checkboxes???')
+function addToFavoritesBtn(newFav) {
+  Alert.alert(
+    'Are you sure you want to add ' + newFav + ' to your favorites?', '',
+    [ 
+      { text: 'Cancel', onPress: () => console.log('canceled action') },
+      { text: 'Confirm', onPress: () => confirmedAddFavorite(newFav) }, 
+    ]
+  );
+  return;
+}
+function confirmedAddFavorite(newFav) {
+  var foundDuplicate = false;
+  const len = Consts.favoritesList.length;
+  for(var i = 0; i < len; i++) {
+    if (Consts.favoritesList[i] == newFav) { foundDuplicate = true }
+  }
+  if (foundDuplicate == false) { //add to favorites array
+    for(var i = len; i > 0; i--) {
+      Consts.favoritesList[i] = Consts.favoritesList[i-1];
+    } 
+    Consts.favoritesList[0] = newFav;
+    PushFavoritesToStorage(false); //add array to DB
+    //alert so the user doesn't backout too fast while uploading.
+    alert('New food is added to your favorites.');
+  } 
+  else { alert('This food is already in your favorites list.'); }
+}
+
+
+function addByUserInput() {
   return
 }
 
@@ -137,11 +158,13 @@ const styles = StyleSheet.create({
     width: '50%',
     flexDirection: "row",
     justifyContent: "flex-start",
+    paddingLeft: '5%',
   },
   LI_Section2:{
     width: '50%',
     flexDirection: "row",
     justifyContent: "flex-end",
+    paddingRight: '5%',
   },
 });
 export default SearchScreen;

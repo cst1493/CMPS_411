@@ -1,12 +1,12 @@
 //@ts-check
 import React, {Component} from 'react';
 import { ListItem , Icon} from 'react-native-elements';
-import { View, Text, Button, StyleSheet, ScrollView, useColorScheme } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, Alert } from 'react-native';
 import Consts from '../Consts';
 import { AsyncStorage } from 'react-native';
 import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
-import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
+import { PushHistoryToStorage, AddToHistoryList, PushFavoritesToStorage } from '../localStorage'
 import { Circle } from 'react-native-svg';
 
 //RECOMMENDED TO RUN PushFavoritesToStorage(true) ONCE TO STORE DUMMY DATA //
@@ -83,7 +83,7 @@ class Favorites extends Component
                     type='feather' //icon library
                     name='trash-2' //icon list: feathericons.com
                     size={15}
-                    onPress={() => deleteFavorite(element, index)}
+                    onPress={() => deleteFavoriteBtn(element)}
                     color= {borderCol}
                   />
                 </View>
@@ -93,7 +93,7 @@ class Favorites extends Component
                 </View>
 
                 <View style={styles.LI_Section3}> 
-                  <Button title="Decide Now" color={buttonColor} onPress={() => decideNowButton(element)} />
+                  <Button title="Decide Now" color={buttonColor} onPress={() => decideNowBtn(element)} />
                 </View>
 
                 <View style={styles.LI_Section4}>
@@ -120,21 +120,50 @@ class Favorites extends Component
   }
 };
 
-function decideNowButton(food) {
-  alert("added to history?"); //TODO finish button with yes/no confirm and save to history.
-  var userConfirmed = false;
-  //TODO user confirm message
-  if (true) { //add item to history
-    AddToHistoryList(food);
-    PushHistoryToStorage();
+function decideNowBtn(decidedMeal) {
+  Alert.alert(
+    'Are you sure you want to add ' + decidedMeal + ' to your history?', '',
+    [ 
+      { text: 'Cancel', onPress: () => console.log('canceled action') },
+      { text: 'Confirm', onPress: () => confirmDecideNow(decidedMeal) }, 
+    ]
+  );
+}
+function confirmDecideNow(decidedMeal) {
+  AddToHistoryList(decidedMeal);
+  PushHistoryToStorage();
+  //TODO sort this food to the bottom of favorites array.
+}
+
+function deleteFavoriteBtn(foodName) {
+  Alert.alert(
+    'DELETE', 
+    'Are you sure you want to permanently delete ' + foodName + ' from your favorites?',
+    [ 
+      { text: 'Cancel', onPress: () => console.log('canceled action') },
+      { text: 'Confirm', onPress: () => confirmDeleteFavorite(foodName) }, 
+    ]
+  );
+}
+function confirmDeleteFavorite(foodName) {
+  const len = Consts.favoritesList.length;
+  var index = -1;
+  for(var i = 0; i < len; i++) {
+    if(foodName == Consts.favoritesList[i]) {
+      index = i;
+      console.log('found & deleted ' + Consts.favoritesList[index] + ' at index ' + index);
+    }
   }
-  return;
+  if (index != -1) { //found item
+    for(var i = index; i < len; i++) {
+      Consts.favoritesList[i] = Consts.favoritesList[i+1];
+    }
+    Consts.favoritesList.pop();
+    PushFavoritesToStorage(); //push array to storage.
+    //TODO refresh page with new array.
+  }
+  else {console.log('something went wrong...  Unable to find foodname for deleting.')}
 }
-
-function deleteFavorite(foodName, index) { //TODO
-  alert('Are you sure you want to delete ' + foodName + index + ' from your favorites?');
-}
-
 
 function addToWheel(addItem) {
   if (Consts.wheelFoods.length > maxWheelItems) { return } //too many items for the wheel.

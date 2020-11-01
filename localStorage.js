@@ -93,10 +93,6 @@ export async function PushFavoritesToStorage(populateDummyData) { //overwrite cu
     try {
       await AsyncStorage.removeItem(fKey); //reset old key to null (replaces file).
       AsyncStorage.setItem(fKey, JSON.stringify(Consts.favoritesList));
-      /*try { //looks at newly stored data
-        console.log('storing data...');
-        var x = await AsyncStorage.getItem(favoritesKey); console.log(x);
-      } catch{'err'}*/
     } catch (error) {
       console.log('error on async storeData()');
     }
