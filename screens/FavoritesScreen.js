@@ -8,6 +8,7 @@ import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
 import { PushHistoryToStorage, AddToHistoryList, PushFavoritesToStorage } from '../localStorage'
 import { Circle } from 'react-native-svg';
+import DialogInput from 'react-native-dialog-input'
 
 //RECOMMENDED TO RUN PushFavoritesToStorage(true) ONCE TO STORE DUMMY DATA //
 //import { PushFavoritesToStorage } from '../localStorage';
@@ -28,7 +29,8 @@ class Favorites extends Component
     super(props);
     this.state = {
       checkbox: [false],
-    }
+      dialogVisible: false,
+    };
   }
   goToWheel() { //navigate if 2 or more selected foods.
     if (Consts.totalChecks < 2) { 
@@ -50,12 +52,6 @@ class Favorites extends Component
     return true; 
   }
   
-  addTempFood(){
-    //TODO add functionality to add a temporary food item by letting the user type in a food name.
-    alert("TODO: add functionality here");
-    return;
-  }
-
   render()
   {
     //if coming from the homepage, reset all checkboxes back to false and clear the wheel.
@@ -70,7 +66,19 @@ class Favorites extends Component
         <ScrollView style={styles.scrollView}>
 
           <View style={styles.barButtons}>
-            <Button title="Add Temporary Food To Wheel" color={buttonColor2} onPress={() => this.addTempFood()} />
+            <Button title="Add Temporary Food To Wheel" color={buttonColor2} onPress={() => this.setState({dialogVisible: true})} />
+          </View>
+
+          <View>
+          <DialogInput 
+            isDialogVisible={this.state.dialogVisible}
+            title={"Add Temporary Meal"}
+            //message={"Add Meal to Wheel"}
+            hintInput ={"Meal"}
+            cancelText={"Close"}
+            submitInput={ (inputText) => {addToWheel(inputText), alert(inputText +" has been added to the Wheel!")} }
+            closeDialog={ () => {this.setState({dialogVisible: false})}}>
+          </DialogInput>
           </View>
 
           <View>
