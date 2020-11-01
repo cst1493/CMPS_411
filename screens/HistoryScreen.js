@@ -7,6 +7,7 @@ import Consts from '../Consts';
 const headerColor = Consts.color3;
 const listColor1 = Consts.color1;
 const listColor2 = Consts.color2;
+const border = Consts.color5;
 
 class History extends Component{
   render() {
@@ -21,7 +22,7 @@ class History extends Component{
           renderItem={({ item, index }) => (
             <ListItem containerStyle={ index % 2 === 0 ? styles.listItem1 : styles.listItem2 }>
               <View>
-                <Text>
+                <Text style={{color: Consts.fontColor}}>
                   { (index+1) + ":  " + item }
                 </Text>
               </View>
@@ -48,20 +49,21 @@ const styles = StyleSheet.create({
     backgroundColor: headerColor,
     textAlign: 'center',
     fontSize: 30,
+    color: Consts.fontColor,
   },
   scrollStyle:{
     width: '100%',
-    backgroundColor: 'grey',
+    backgroundColor: border,
   },
   listItem1:{
     backgroundColor: listColor1,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    borderBottomColor: border,
   },
   listItem2:{
     backgroundColor: listColor2,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    borderBottomColor: border,
   },
 });
 

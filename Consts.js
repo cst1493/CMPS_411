@@ -1,8 +1,14 @@
 // @ts-check
 import { Component, useState } from "react";
 //https://color.adobe.com/create/color-wheel
-//const color1 = '#4CA7ED'; const color2 = '#4FF7C7'; const color3 = '#59E052'; const color4 = '#F4F74F'; const color5 = '#F0C348'; 
-const color1 = '#E6BC05'; const color2 = '#FFA02C'; const color3 = '#FF790B'; const color4 = '#FCFCFC'; const color5 = '#000000';
+/*const color1 = '#E6BC05'; const color2 = '#FFA02C'; 
+const color3 = '#FF790B'; const color4 = '#FF790B'; 
+const color5 = '#777777'; const fontColor = '#000000'; //*/
+
+const color1 = '#222222'; const color2 = '#444444'; 
+const color3 = '#276000'; const color4 = '#943E37'; 
+const color5 = '#777777'; const fontColor = '#FCFCFC'; //*/
+
 const maxHistoryLength = 12;
 
 var wheelFoods = ['empty'];
@@ -16,5 +22,5 @@ export default {
     favoritesList,
     historyList, maxHistoryLength,
     winner,
-    color1, color2, color3, color4, color5
+    color1, color2, color3, color4, color5, fontColor
 }

@@ -14,10 +14,12 @@ import { Circle } from 'react-native-svg';
 //PushFavoritesToStorage(true);
 
 const buttonColor = Consts.color3;
+const buttonColor2 = Consts.color4;
 const listColor = Consts.color1;
-const trashButtonColor = '#777777';
-const maxWheelItems = 11;
+const borderCol = Consts.color5;
+const font = Consts.fontColor;
 
+const maxWheelItems = 11;
 Consts.wheelFoods=[];
 Consts.totalChecks = 0;
 class Favorites extends Component 
@@ -68,7 +70,7 @@ class Favorites extends Component
         <ScrollView style={styles.scrollView}>
 
           <View style={styles.barButtons}>
-            <Button title="Add Temporary Food To Wheel" color={buttonColor} onPress={() => this.addTempFood()} />
+            <Button title="Add Temporary Food To Wheel" color={buttonColor2} onPress={() => this.addTempFood()} />
           </View>
 
           <View>
@@ -82,12 +84,12 @@ class Favorites extends Component
                     name='trash-2' //icon list: feathericons.com
                     size={15}
                     onPress={() => deleteFavorite(element, index)}
-                    color= {trashButtonColor}
+                    color= {borderCol}
                   />
                 </View>
 
                 <View style={styles.LI_Section2}>
-                  <ListItem.Title> { element } </ListItem.Title>
+                  <ListItem.Title style={{color: font}}> { element } </ListItem.Title>
                 </View>
 
                 <View style={styles.LI_Section3}> 
@@ -97,9 +99,10 @@ class Favorites extends Component
                 <View style={styles.LI_Section4}>
                   <CheckBox
                     value={this.state.checkbox[index]}
+                    tintColors={{true: buttonColor, false: borderCol}}
                     onValueChange={( ) => this.setState({value: this.changeCheckBox(index, element)})}
                   />
-                  <Text>on wheel</Text>
+                  <Text style={{color: font}}>on wheel</Text>
                 </View>
 
               </ListItem>
@@ -109,7 +112,7 @@ class Favorites extends Component
         </ScrollView>
 
         <View style={styles.barButtons}>
-          <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.goToWheel()} />
+          <Button title="Spin The Wheel" color={buttonColor2} onPress={() => this.goToWheel()} />
         </View>
         
       </View>
@@ -166,7 +169,7 @@ const styles = StyleSheet.create({
   Listing: {
     borderTopWidth: 2,
     backgroundColor: listColor,
-    borderColor: 'black',
+    borderColor: borderCol,
   },
   LI_Section1:{
     width: '8%',
@@ -189,7 +192,6 @@ const styles = StyleSheet.create({
   },
   barButtons: {
     width: '100%',
-    fontSize: 20,
   },
 });
 

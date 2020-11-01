@@ -15,9 +15,11 @@ const searchItems = [ //77 items
 'Tilapia', 'Tofu', 'Tuna', 'Turkey', 'Waffles', 'Wings', 'Wrap'
 ];
 
-const listColor = '#cccccc';
-const buttonColor = '#777777';
-const barButtonColor = '#333333';
+/*const listColor = '#cccccc'; const buttonColor = '#777777'; const barButtonColor = '#333333'; const border = Consts.color5;//*/
+const listColor = Consts.color1;
+const buttonColor = Consts.color3;
+const barButtonColor = Consts.color4;
+const border = Consts.color5;//*/
 
 class SearchScreen extends Component {
   constructor(props) {
@@ -49,8 +51,7 @@ searchFilterFunction = text => {
 renderHeader = () => {
   return (
     <SearchBar
-      placeholder="Enter Text Here..."
-      lightTheme
+      placeholder="Search..." //lightTheme
       round
       onChangeText={text => this.searchFilterFunction(text)}
       autoCorrect={false}
@@ -71,10 +72,10 @@ renderHeader = () => {
     <View style={styles.container}>
     <ListItem  containerStyle={styles.Listing}>
       <View style={styles.topButtons}>
-        <Button title="Search Nearby Restaurants" color={buttonColor} onPress={() => addToFavorites(null)} />
+        <Button title="Search Nearby Restaurants" color={barButtonColor} onPress={() => addToFavorites(null)} />
       </View>
       <View style={styles.topButtons}>
-        <Button title="Add Food Myself" color={buttonColor} onPress={() => addToFavorites(null)} />
+        <Button title="Add Food Myself" color={barButtonColor} onPress={() => addToFavorites(null)} />
       </View>
     </ListItem>
 
@@ -83,7 +84,7 @@ renderHeader = () => {
         renderItem={({ item, index }) => (
           <ListItem key={index} containerStyle={styles.Listing}>
             <View style={styles.LI_Section1}>
-              <ListItem.Title> { item } </ListItem.Title>
+              <ListItem.Title style={{color: Consts.fontColor}}> { item } </ListItem.Title>
             </View>
 
             <View style={styles.LI_Section2}> 
@@ -117,6 +118,7 @@ function addToFavorites(newFav) { //TODO
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: border,
   }, 
   topButtons: {
     width: '50%',
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
   Listing: {
     borderTopWidth: 2,
     backgroundColor: listColor,
-    borderColor: 'black',
+    borderColor: border,
   },
   LI_Section1:{
     width: '50%',

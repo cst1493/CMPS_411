@@ -9,6 +9,8 @@ const title = 'Hungry?\nI\'m here to help you decide.'
 const btn1 = 'Search New Meals'
 const btn2 = 'Meal History'
 const btn3 = 'Favorites'
+const btnColor = Consts.color1;
+const border = Consts.color5;
 
 class HomeScreen extends Component 
 { 
@@ -28,7 +30,7 @@ class HomeScreen extends Component
       
         <View style={styles.container}>
         
-          <Text style={styles.looseText}> 
+          <Text style={styles.topText}> 
             {title}
           </Text>
 
@@ -60,29 +62,31 @@ const styles = StyleSheet.create({
   },
   button: {
     minWidth: '70%',
-    marginBottom: '5%',
-    marginTop: '5%',
-    backgroundColor: Consts.color4,
+    marginTop: '10%',
+    backgroundColor: btnColor,
     borderWidth: 2,
     borderRadius: 12,
-    color: Consts.color3,
+    color: Consts.fontColor,
     fontSize: 24,
     fontWeight: 'bold',
     padding: '5%',
     textAlign:'center',
     overflow: 'hidden',
+    borderColor: border,
   },
-  looseText:{
+  topText:{
     minWidth: '90%',
-    color: Consts.color5,
     fontSize: 26,
     fontWeight: 'bold',
     padding: 5,
+    borderWidth: 2,
     borderRadius: 12,
     textAlign:'center',
     justifyContent: 'center',
-    backgroundColor: Consts.color1,
     overflow: 'hidden',
+    color: Consts.fontColor,
+    backgroundColor: btnColor,
+    borderColor: border,
   },
   image: {
     flex: 1,

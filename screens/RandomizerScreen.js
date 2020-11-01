@@ -7,6 +7,10 @@ import Consts from "../Consts";
 import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
 // @ts-ignore
 import WheelOfFortune from 'react-native-wheel-of-fortune';
+const wheelFrame = Consts.color5;
+const c1 = '#9CC6FF', c2 = '#8E9DE8', c3 = '#B1A8FF', c4 = '#AF8EE8', c5 = '#DC9CFF'
+//const c1 = '#8597FF', c2 = '#79E8C1', c3 = '#D0CC77', c4 = '#EBC27F', c5 = '#FF8F92'
+const colores = [c1, c2, c3, c4, c5];
 
 class Wheel extends Component
 {
@@ -26,11 +30,12 @@ class Wheel extends Component
           duration={5000} //duration={5000}
           onRef={ref => (this.child = ref)} 
           rewards={ Consts.wheelFoods }
+          colors={colores}
           knobSize={26}
           borderWidth={10}
-          borderColor={ '#c0392b' }
+          borderColor={ wheelFrame }
           innerRadius={50}
-          backgroundColor={"#c0392b"}
+          backgroundColor={ wheelFrame }
           getWinner={(value, index) => this.setState({ winnerValue: BorrowValue(value), winnerIndex: index })}
         />
         {/* <Button title="Press me" onPress={ () => { this.child._onPress() } } /> */}
