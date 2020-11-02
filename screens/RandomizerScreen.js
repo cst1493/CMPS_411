@@ -8,9 +8,7 @@ import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
 // @ts-ignore
 import WheelOfFortune from 'react-native-wheel-of-fortune';
 const wheelFrame = Consts.color5;
-const c1 = '#9CC6FF', c2 = '#8E9DE8', c3 = '#B1A8FF', c4 = '#AF8EE8', c5 = '#DC9CFF'
-//const c1 = '#8597FF', c2 = '#79E8C1', c3 = '#D0CC77', c4 = '#EBC27F', c5 = '#FF8F92'
-const colores = [c1, c2, c3, c4, c5];
+const colores = ['#943E37', '#276000', '#CBA25F', '#61318C', '#F07212'];
 
 class Wheel extends Component
 {
@@ -27,7 +25,7 @@ class Wheel extends Component
     return(
       <View style={styles.container}>
         <WheelOfFortune
-          duration={5000} //duration={5000}
+          duration={5000}
           onRef={ref => (this.child = ref)} 
           rewards={ Consts.wheelFoods }
           colors={colores}

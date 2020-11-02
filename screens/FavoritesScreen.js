@@ -16,6 +16,7 @@ import DialogInput from 'react-native-dialog-input'
 
 const buttonColor = Consts.color3;
 const buttonColor2 = Consts.color4;
+const iconColor = '#8C603E'
 const listColor = Consts.color1;
 const borderCol = Consts.color5;
 const font = Consts.fontColor;
@@ -92,7 +93,7 @@ class Favorites extends Component
                     name='trash-2' //icon list: feathericons.com
                     size={15}
                     onPress={() => deleteFavoriteBtn(element)}
-                    color= {borderCol}
+                    color= {iconColor}
                   />
                 </View>
 
@@ -107,7 +108,7 @@ class Favorites extends Component
                 <View style={styles.LI_Section4}>
                   <CheckBox
                     value={this.state.checkbox[index]}
-                    tintColors={{true: buttonColor, false: borderCol}}
+                    tintColors={{true: buttonColor, false: iconColor}}
                     onValueChange={( ) => this.setState({value: this.changeCheckBox(index, element)})}
                   />
                   <Text style={{color: font}}>on wheel</Text>
