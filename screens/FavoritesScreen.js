@@ -70,15 +70,15 @@ class Favorites extends Component
           </View>
 
           <View>
-          <DialogInput 
-            isDialogVisible={this.state.dialogVisible}
-            title={"Add Temporary Meal"}
-            //message={"Add Meal to Wheel"}
-            hintInput ={"Meal"}
-            cancelText={"Close"}
-            submitInput={ (inputText) => {addToWheel(inputText), alert(inputText +" has been added to the Wheel!")} }
-            closeDialog={ () => {this.setState({dialogVisible: false})}}>
-          </DialogInput>
+            <DialogInput 
+              isDialogVisible={this.state.dialogVisible}
+              title={"Add Temporary Meal"}
+              //message={"Add Meal to Wheel"}
+              hintInput ={"Meal"}
+              cancelText={"Close"}
+              submitInput={ (inputText) => {addToWheel(inputText), alert(inputText +" has been added to the Wheel!")} }
+              closeDialog={ () => {this.setState({dialogVisible: false})}}>
+            </DialogInput>
           </View>
 
           <View>

@@ -5,6 +5,8 @@ import {SearchBar, ListItem} from 'react-native-elements';
 import { Line } from 'react-native-svg';
 import { PushFavoritesToStorage } from '../localStorage';
 import Consts from '../Consts';
+import DialogInput from 'react-native-dialog-input'
+
 const searchItems = [ //77 items
 'Asparagus', 'Black Beans', 'Bagels', 'Baked Beans', 'BBQ', 'Biscuits', 'Burittos', 'Carne Asada', 'Chicken', 'Chinese', 
 'Catfish', 'Crab', 'Chickpeas', 'Chili', 'Chimichanga', 'Dumplings', 'Donuts', 'Eggs', 'Enchiladas', 'Egg Rolls', 
@@ -30,6 +32,7 @@ class SearchScreen extends Component {
       loading: false,
       data: searchItems,
       error: null,
+      dialogVisible: false,
     };
     this.foodArray = this.state.data;
   }
@@ -76,9 +79,21 @@ renderHeader = () => {
           <Button title="Search Nearby Restaurants" color={barButtonColor} onPress={ () => addByUserInput() }/>
         </View>
         <View style={styles.topButtons}>
-          <Button title="Add Food Myself" color={barButtonColor} onPress={ () => addByUserInput() }/>
+          <Button title="Add Food Myself" color={barButtonColor} onPress={ () => this.setState({dialogVisible: true}) }/>
         </View>
       </ListItem>
+
+      <View>
+        <DialogInput 
+          isDialogVisible={this.state.dialogVisible}
+          title={"Add Custom Food"}
+          message={"Can't find your favorite meal? Add it yourself!"}
+          hintInput ={"Meal"}
+          cancelText={"Close"}
+          submitInput={ (inputText) => {addToFavoritesBtn(inputText)} }
+          closeDialog={ () => {this.setState({dialogVisible: false})}}>
+          </DialogInput>
+      </View>
 
       <FlatList
         data = {this.state.data} //rendering data makes weird error where you can navigate to all pages...  TODO
@@ -126,7 +141,7 @@ function confirmedAddFavorite(newFav) {
     Consts.favoritesList[0] = newFav;
     PushFavoritesToStorage(false); //add array to DB
     //alert so the user doesn't backout too fast while uploading.
-    alert('New food is added to your favorites.');
+    alert(newFav + ' is added to your favorites.');
   } 
   else { alert('This food is already in your favorites list.'); }
 }
