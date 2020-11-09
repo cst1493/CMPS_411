@@ -1,23 +1,20 @@
 //@ts-check
 import React, {Component} from 'react';
 import { ListItem , Icon} from 'react-native-elements';
-import { View, Text, Button, StyleSheet, ScrollView, useColorScheme } from 'react-native';
+import { View, Text, Button, StyleSheet, ScrollView, Alert } from 'react-native';
 import Consts from '../Consts';
-import { AsyncStorage } from 'react-native';
-import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
-import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
-import { Circle } from 'react-native-svg';
- 
+import { PushHistoryToStorage, AddToHistoryList, PushFavoritesToStorage, MoveToBotOfFavs } from '../localStorage'
+import DialogInput from 'react-native-dialog-input'
+
 const buttonColor = Consts.color3;
-const trashButtonColor = '#777777';
+const buttonColor2 = Consts.color4;
+const iconColor = '#8C603E'
 const listColor = Consts.color1;
+const borderCol = Consts.color5;
+const font = Consts.fontColor;
 
-//setFavoritesList(true); // RECOMMENDED TO RUN overwriteFavoritesList(true) ONCE TO STORE DUMMY DATA //
-
-//AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
-//getFavoritesList(); //all food items updated to var Const.favoritesList. will return null if storing data at the same time.
-
+const maxWheelItems = 11;
 Consts.wheelFoods=[];
 Consts.totalChecks = 0;
 class Favorites extends Component 
@@ -26,14 +23,15 @@ class Favorites extends Component
     super(props);
     this.state = {
       checkbox: [false],
-    }
+      dialogVisible: false,
+    };
   }
   goToWheel() { //navigate if 2 or more selected foods.
     if (Consts.totalChecks < 2) { 
-      alert("Must select 2 or more items to randomize."); //TODO replace with: https://docs.nativebase.io/Components.html#toast-type-headref 
+      alert("Must select 2 or more items to go to the wheel.");
       return;
     }
-    this.props.navigation.navigate('Randomizer');
+    this.props.navigation.navigate('Spin The Wheel');
     return;
   }
 
@@ -48,12 +46,6 @@ class Favorites extends Component
     return true; 
   }
   
-  addTempFood(){
-    //TODO add functionality to add a temporary food item by letting the user type in a food name.
-    alert("TODO: add functionality here");
-    return;
-  }
-
   render()
   {
     //if coming from the homepage, reset all checkboxes back to false and clear the wheel.
@@ -68,7 +60,18 @@ class Favorites extends Component
         <ScrollView style={styles.scrollView}>
 
           <View style={styles.barButtons}>
-            <Button title="Add Temporary Food To Wheel" color={buttonColor} onPress={() => this.addTempFood()} />
+            <Button title="Add Temporary Food To Wheel" color={buttonColor2} onPress={() => this.setState({dialogVisible: true})} />
+          </View>
+
+          <View>
+            <DialogInput 
+              isDialogVisible={this.state.dialogVisible}
+              title={"Add Temporary Meal"}
+              hintInput ={"Meal"}
+              cancelText={"Close"}
+              submitInput={ (inputText) => { addUserInputToWheel(inputText) } }
+              closeDialog={ () => {this.setState({dialogVisible: false})}}>
+            </DialogInput>
           </View>
 
           <View>
@@ -81,25 +84,26 @@ class Favorites extends Component
                     type='feather' //icon library
                     name='trash-2' //icon list: feathericons.com
                     size={15}
-                    onPress={() => deleteFavorite(element, index)}
-                    color= {trashButtonColor}
+                    onPress={() => deleteFavoriteBtn(element)}
+                    color= {iconColor}
                   />
                 </View>
 
                 <View style={styles.LI_Section2}>
-                  <ListItem.Title> { element } </ListItem.Title>
+                  <ListItem.Title style={{color: font}}> { element } </ListItem.Title>
                 </View>
 
                 <View style={styles.LI_Section3}> 
-                  <Button title="Decide Now" color={buttonColor} onPress={() => decideNowButton(element)} />
+                  <Button title="Decide Now" color={buttonColor} onPress={() => decideNowBtn(element)} />
                 </View>
 
                 <View style={styles.LI_Section4}>
                   <CheckBox
                     value={this.state.checkbox[index]}
+                    tintColors={{true: buttonColor, false: iconColor}}
                     onValueChange={( ) => this.setState({value: this.changeCheckBox(index, element)})}
                   />
-                  <Text>on wheel</Text>
+                  <Text style={{color: font}}>on wheel</Text>
                 </View>
 
               </ListItem>
@@ -109,7 +113,7 @@ class Favorites extends Component
         </ScrollView>
 
         <View style={styles.barButtons}>
-          <Button title="Spin The Wheel" color={buttonColor} onPress={() => this.goToWheel()} />
+          <Button title="Spin The Wheel" color={buttonColor2} onPress={() => this.goToWheel()} />
         </View>
         
       </View>
@@ -117,57 +121,65 @@ class Favorites extends Component
   }
 };
 
-function decideNowButton(food) {
-  alert("added to history?"); //TODO finish button with yes/no confirm and save to history.
-  var userConfirmed = false;
-  //TODO user confirm message
-  if (true) { //add item to history
-    AddToHistoryList(food);
-    PushHistoryToStorage();
-  }
-  return;
+function decideNowBtn(decidedMeal) {
+  Alert.alert(
+    'Are you sure you want to add ' + decidedMeal + ' to your history?', '',
+    [ 
+      { text: 'Cancel' },
+      { text: 'Confirm', onPress: () => confirmDecideNow(decidedMeal) }, 
+    ]
+  );
+}
+function confirmDecideNow(decidedMeal) {
+  AddToHistoryList(decidedMeal);
+  PushHistoryToStorage();
+  MoveToBotOfFavs(decidedMeal); //sorts & saves favorites
+  Alert.alert(
+    decidedMeal + ' has been added to your history.', '',
+    [ { text: 'Close' } ]
+  );
 }
 
-function deleteFavorite(foodName, index) { //TODO
-  alert('Are you sure you want to delete ' + foodName + index + ' from your favorites?');
+function deleteFavoriteBtn(foodName) {
+  Alert.alert(
+    'DELETE', 
+    'Are you sure you want to permanently delete ' + foodName + ' from your favorites?',
+    [ 
+      { text: 'Cancel' },
+      { text: 'Confirm', onPress: () => confirmDeleteFavorite(foodName) }, 
+    ]
+  );
 }
-
-const favoritesKey = 'favorites'; //key is used to find, store and replace favorites data.
-async function setFavoritesList(populateDummyData) { //overwrite current Consts.favoritesList.
-  if (populateDummyData == true) {
-    const testFavorites = ['Chicken', 'Fish', 'Subway', 'Pizza'
-    , 'Salad', 'Shrimp', 'China Buffet', 'Popeyes', 'BK', 'Canes', 'Burgers', 'Fried Rice', 'Tacos', 'Pancakes', 'Eggs']; //*/
-    Consts.favoritesList = testFavorites;
-  }
-  try {
-    await AsyncStorage.removeItem(favoritesKey); //reset old key to null (replaces file).
-    AsyncStorage.setItem(favoritesKey, JSON.stringify(Consts.favoritesList));
-    /*try { //looks at newly stored data
-      console.log('storing data...');
-      var x = await AsyncStorage.getItem(favoritesKey); console.log(x);
-    } catch{'err'}*/
-  } catch (error) {
-    console.log('error on async storeData()');
-  }
-  return
-}
-
-async function getFavoritesList() { //update Consts.favoritesList with stored data. Move to App.js???
-  try {
-    let temp = await AsyncStorage.getItem(favoritesKey); //got json storage file with array info.
-    if (temp !== null) { //if data found
-      Consts.favoritesList = await AsyncStorage.getItem(favoritesKey).then(require => JSON.parse(require))
-      .catch(error => console.log('retrieve error'));
-      //console.log(Consts.favoritesList);
+function confirmDeleteFavorite(foodName) {
+  const len = Consts.favoritesList.length;
+  var index = -1;
+  for(var i = 0; i < len; i++) {
+    if(foodName == Consts.favoritesList[i]) {
+      index = i;
+      //console.log('found & deleted ' + Consts.favoritesList[index] + ' at index ' + index);
     }
-    else console.log('favoritesKey is empty.')
-  } catch (error) {
-      console.log("failed to retrieveData()");
-  } return;
+  }
+  if (index != -1) { //found item
+    for(var i = index; i < len; i++) {
+      Consts.favoritesList[i] = Consts.favoritesList[i+1];
+    }
+    Consts.favoritesList.pop();
+    PushFavoritesToStorage(); //push array to storage.
+    //refresh page with new array. /////////////////////////////////////////////////////////////////////////////////// TODO Refresh
+  }
+}
+
+function addUserInputToWheel(addItem) {
+  if (addItem == null || addItem == "") { return; }
+  addToWheel(addItem);
+  Alert.alert(
+    addItem +' was added to the wheel!', '',
+    [ { text: 'Exit' } ]
+  );
 }
 
 function addToWheel(addItem) {
-  if (Consts.wheelFoods.length > 11) { return } //too many items for the wheel.
+  if (Consts.wheelFoods.length > maxWheelItems) { return } //too many items for the wheel.
   for (var i = 0; i < Consts.wheelFoods.length; i++) {
     if (Consts.wheelFoods[i] == addItem){
       return; //duplicate found. do nothing.
@@ -199,7 +211,7 @@ const styles = StyleSheet.create({
   Listing: {
     borderTopWidth: 2,
     backgroundColor: listColor,
-    borderColor: 'black',
+    borderColor: borderCol,
   },
   LI_Section1:{
     width: '8%',
@@ -222,7 +234,6 @@ const styles = StyleSheet.create({
   },
   barButtons: {
     width: '100%',
-    fontSize: 20,
   },
 });
 

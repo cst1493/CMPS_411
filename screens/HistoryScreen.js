@@ -4,6 +4,11 @@ import { View, Text, Button, StyleSheet, ScrollView, FlatList, AsyncStorage } fr
 import { ListItem } from 'react-native-elements';
 import Consts from '../Consts';
 
+const headerColor = Consts.color3;
+const listColor1 = Consts.color1;
+const listColor2 = Consts.color2;
+const border = Consts.color5;
+
 class History extends Component{
   render() {
     return(
@@ -17,7 +22,7 @@ class History extends Component{
           renderItem={({ item, index }) => (
             <ListItem containerStyle={ index % 2 === 0 ? styles.listItem1 : styles.listItem2 }>
               <View>
-                <Text>
+                <Text style={{color: Consts.fontColor}}>
                   { (index+1) + ":  " + item }
                 </Text>
               </View>
@@ -35,28 +40,30 @@ const styles = StyleSheet.create({
     margin: 'auto',
     flex: 1,
     width: '100%',
-    backgroundColor: Consts.color5,
+    backgroundColor: 'black',
   },
   title: {
     padding: 18,
-    borderWidth: 4,
-    backgroundColor: Consts.color1,
+    borderTopWidth: 4,
+    borderBottomWidth: 4,
+    backgroundColor: headerColor,
     textAlign: 'center',
     fontSize: 30,
+    color: Consts.fontColor,
   },
   scrollStyle:{
     width: '100%',
-    backgroundColor: 'grey',
+    backgroundColor: border,
   },
   listItem1:{
-    backgroundColor: Consts.color3,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    backgroundColor: listColor1,
+    borderBottomWidth: 2,
+    borderBottomColor: border,
   },
   listItem2:{
-    backgroundColor: Consts.color6,
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    backgroundColor: listColor2,
+    borderBottomWidth: 2,
+    borderBottomColor: border,
   },
 });
 

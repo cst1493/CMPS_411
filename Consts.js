@@ -1,23 +1,20 @@
 // @ts-check
-import { Component, useState } from "react";
-//https://color.adobe.com/create/color-wheel
-//const color1 = '#4CA7ED'; const color2 = '#4FF7C7'; const color3 = '#59E052'; const color4 = '#F4F74F'; const color5 = '#F0C348'; 
-//const color1 = '#475CFF'; const color2 = '#43DED0'; const color3 = '#70F555'; const color4 = '#DEC943'; const color5 = '#F5994C'; 
-const color1 = '#E6BC05'; const color2 = '#E61B00'; const color3 = '#FF790B'; const color4 = '#FCFCFC'; const color5 = '#000000';
-const color6 = '#FFA02C';
-const historyKey = 'history';
-const maxHistoryLength = 12;
+//import { Component, useState } from "react";
+
+const color1 = '#222222'; const color2 = '#2D2D2D'; 
+const color3 = '#276000'; const color4 = '#943E37'; 
+const color5 = '#000000'; const fontColor = '#FCFCFC'; //*/
+
+const maxHistoryLength = 20;
 
 var wheelFoods = ['empty'];
 var totalChecks = 0; //keeping the counter with wheelFoods so they reset at the same time.  2 checkboxes minimum to go to wheel.
 var favoritesList = ['empty'];
 var historyList = [''];
-var winner = '';
 
 export default {
     wheelFoods, totalChecks,
     favoritesList,
-    historyList, historyKey, maxHistoryLength,
-    winner,
-    color1, color2, color3, color4, color5, color6
+    historyList, maxHistoryLength,
+    color1, color2, color3, color4, color5, fontColor
 }

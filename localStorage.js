@@ -1,79 +1,32 @@
-/// @ts-check
-import React, { Component } from 'react';
-import { Text, Button } from 'react-native';
+//@ts-check
 import { AsyncStorage } from 'react-native';
 import Consts from './Consts';
-import arrayMove from 'array-move';
 
-class localStorage extends Component{
-    //favoritesArray['', ''];
-    favoritesArry = retrieveData()
-}
+const hKey = 'history';
+const fKey = 'favorites';
+//AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
 
-const testingFavorites = ['Chicken', 'Fish', 'Burgers', 'Pizza', 'Salad', 'Shrimp', 'China Buffet',
-    'Popeyes', 'BK', 'Canes', 'Subway', 'Fried Rice', 'Tacos', 'Pancakes', 'Eggs'];
-
-const favoritesKey = 'favorites';
-//var favoritesArray = ['temp', 'temp'];
-var favoritesArray;
-
-async function storeData() {
-    favoritesArray = testingFavorites; //TODO TEMP
-    try {
-        AsyncStorage.setItem(favoritesKey, JSON.stringify(favoritesArray));
-        console.log('stored: ' + favoritesArray);
-        return
-    } catch (error) {
-      console.log('catch localStorage.async storeData()');
-    }
-}
-
-async function retrieveData() {
-    try {
-      const favsList = await AsyncStorage.getItem(favoritesKey);
-
-      if (favsList !== null) { //if found any data
-        console.log(favsList);
-        return AsyncStorage.getItem(favsList)
-        .then(req => JSON.parse(req))
-        .then(json => console.log(json))
-        .catch(error => console.log('error!')); //stringArr[] = retrieveData(); || stringArr.retrieveData(); ???
+export async function MoveToBotOfFavs(latestMeal) {
+  var favs = Consts.favoritesList;
+  var temp = "";
+  var prevIndex = -1;
+  if (favs.length > 0) {
+    for (var i = 0; i < favs.length-1; i++) {
+      if (favs[i] == latestMeal) {
+        temp = favs[i];
+        prevIndex = i;
       }
-      else console.log('favoritesKey is empty.')
-    } catch (error) {
-        console.log("catch localStorage.retrieveData()");
     }
-    return 
-}
-
-async function MoveToBotOfList(favorites, latestMeal) {
-    try {
-        //Get Last Index of Array
-        const len = favorites.length-1;
-
-        //Find index of latestMeal
-        var latestIndex;
-        for(var i = 0; i<favorites.length;i++){
-            if (favorites[i]==latestMeal) {
-                latestIndex = i;
-            } 
-        }
-        //check to make sure latestIndex isn't null
-        if (latestIndex == null) {
-            throw 'Index not found!';
-        }
-        //move the index to the last index
-        const newFavArray = arrayMove(favorites,latestIndex,len);
-        
-        //Store the new array in local storage
-        AsyncStorage.setItem(favoritesKey, JSON.stringify(newFavArray));
-        console.log('stored: ' + newFavArray);
-        return;
-
-
-    } catch(error) {
-        console.log("MoveToBotOfList" + error);
+    if (prevIndex != -1) {
+      for (var i = prevIndex; i < favs.length-1; i++) {
+        favs[i] = favs[i+1]
+      }
+      favs[favs.length-1] = temp;
+      Consts.favoritesList = favs;
+      PushFavoritesToStorage();
     }
+  }
+  return;
 }
 
 export function AddToHistoryList(newItem) 
@@ -89,19 +42,48 @@ export function AddToHistoryList(newItem)
     Consts.historyList[0] = newItem;
 }
 export async function PushHistoryToStorage() { //overwrite current Consts.favoritesList.
-    const key = Consts.historyKey;
     try {
-        await AsyncStorage.removeItem(key); //reset old key to null (replaces file).
-        AsyncStorage.setItem(key, JSON.stringify(Consts.historyList));
+        await AsyncStorage.removeItem(hKey); //reset old key to null (replaces file).
+        AsyncStorage.setItem(hKey, JSON.stringify(Consts.historyList));
     }   catch (error) {
     console.log('error on async storeData()');
   }
   return
 }
-
-
-
-export default {
-    favoritesArray, localStorage,
+export async function PullHistoryFromStorage() { //update Consts.Name with stored data.
+    try {
+      let temp = await AsyncStorage.getItem(hKey); //got json storage file with array info.
+      if (temp !== null) { //if data found
+          Consts.historyList = await AsyncStorage.getItem(hKey).then(require => JSON.parse(require))
+          .catch(error => console.log('retrieve error'));
+      }
+      else console.log('favoritesKey is empty.')
+    } catch (error) {
+          console.log("failed to retrieveData()");
+    } return;
 }
+
+
+export async function PullFavoritesFromStorage() { //update Consts.favoritesList with stored data.
+    try {
+      let temp = await AsyncStorage.getItem(fKey); //got json storage file with array info.
+      if (temp !== null) { //if data found
+        Consts.favoritesList = await AsyncStorage.getItem(fKey).then(require => JSON.parse(require))
+        .catch(error => console.log('retrieve error'));
+      }
+      else console.log('favoritesKey is empty.')
+    } catch (error) {
+        console.log("failed to retrieveData()");
+    } return;
+}
+export async function PushFavoritesToStorage() { //overwrite current Consts.favoritesList.
+    try {
+      await AsyncStorage.removeItem(fKey); //reset old key to null (replaces file).
+      AsyncStorage.setItem(fKey, JSON.stringify(Consts.favoritesList));
+    } catch (error) {
+      console.log('error on async storeData()');
+    }
+    return
+}
+
 
