@@ -6,15 +6,15 @@ import { PushFavoritesToStorage } from '../localStorage';
 import Consts from '../Consts';
 import DialogInput from 'react-native-dialog-input'
 
-const searchItems = [ //77 items
+const searchItems = [ //74 items
 'Asparagus', 'Black Beans', 'Bagels', 'Baked Beans', 'BBQ', 'Biscuits', 'Burittos', 'Carne Asada', 'Chicken', 'Chinese', 
 'Catfish', 'Crab', 'Chickpeas', 'Chili', 'Chimichanga', 'Dumplings', 'Donuts', 'Eggs', 'Enchiladas', 'Egg Rolls', 
 'Fajitas', 'Fish', 'Fishsticks', 'French dip', 'French toast', ' Fried Rice', 'Green Beans', 'Guancamole', 'Gumbo', 'Ham', 
-'Hamburger', 'Hashbrowns', 'Hotdogs', 'Ice Cream', 'Indian', 'Italian', 'Jambalaya', 'kabobs', 'lobster', 'Lasagna', 
-'Mac & Cheese', 'Meatballs', 'Meatloaf', 'Mexican', 'Nachos', 'Noodles', 'Oatmeal', 'Omelet', 'Oysters', 'Pancakes', 
-'Pasta', 'PB&J', 'Peas', 'Pizza', 'Pork Chops', 'Potatos', 'Quesadilla', 'Rice', 'Rotini', 'Salad', 
-'Salmon', 'Sandwich', 'Sausage', 'Smoothie', 'Soup', 'Spaghetti', 'Steak', 'Stir Fry', 'Sushi', 'Tacos', 
-'Tilapia', 'Tofu', 'Tuna', 'Turkey', 'Waffles', 'Wings', 'Wrap'
+'Hamburger', 'Hashbrowns', 'Hotdogs', 'Ice Cream', 'Jambalaya', 'Kabobs', 'Lobster', 'Lasagna', 'Mac & Cheese', 'Meatballs', 
+'Meatloaf', 'Nachos', 'Noodles', 'Oatmeal', 'Omelet', 'Oysters', 'Pancakes', 'Pasta', 'PB&J', 'Peas', 
+'Pizza', 'Pork Chops', 'Potatos', 'Quesadilla', 'Rice', 'Rotini', 'Salad', 'Salmon', 'Sandwich', 'Sausage', 
+'Smoothie', 'Soup', 'Spaghetti', 'Steak', 'Stir Fry', 'Sushi', 'Tacos', 'Tilapia', 'Tofu', 'Tuna', 
+'Turkey', 'Waffles', 'Wings', 'Wrap'
 ];
 
 const listColor = Consts.color1;
@@ -81,7 +81,7 @@ renderHeader = () => {
         <DialogInput 
           isDialogVisible={this.state.dialogVisible}
           title={"Add Custom Food"}
-          message={"Can't find your favorite meal? Add it yourself!"}
+          message={"Can't find your favorite meal or restaurant? Add it yourself!"}
           hintInput ={"Meal"}
           cancelText={"Close"}
           submitInput={ (inputText) => {addToFavoritesBtn(inputText)} }
@@ -152,10 +152,6 @@ const styles = StyleSheet.create({
     width: '100%',
     fontSize: 20,
   },
-  barButtons: {
-    width: '100%',
-    fontSize: 20,
-  }, 
   Listing: {
     borderTopWidth: 2,
     backgroundColor: listColor,
@@ -165,13 +161,13 @@ const styles = StyleSheet.create({
     width: '50%',
     flexDirection: "row",
     justifyContent: "flex-start",
-    paddingLeft: '5%',
+    paddingLeft: '3%',
   },
   LI_Section2:{
     width: '50%',
     flexDirection: "row",
     justifyContent: "flex-end",
-    paddingRight: '5%',
+    paddingRight: '3%',
   },
 });
 export default SearchScreen;

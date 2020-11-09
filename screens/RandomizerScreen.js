@@ -27,10 +27,10 @@ class Wheel extends Component
           onRef={ref => (this.child = ref)} 
           rewards={ Consts.wheelFoods }
           colors={colores}
-          knobSize={26}
-          borderWidth={10}
+          knobSize={25}
+          borderWidth={2}
           borderColor={ wheelFrame }
-          innerRadius={50}
+          innerRadius={12}
           backgroundColor={ wheelFrame }
           getWinner={(value, index) => this.setState({ winnerValue: BorrowValue(value), winnerIndex: index })}
         />

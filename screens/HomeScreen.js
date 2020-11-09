@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     color: Consts.fontColor,
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     padding: '5%',
     textAlign:'center',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   },
   topText:{
     minWidth: '90%',
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: 'bold',
     padding: 5,
     borderWidth: 2,
