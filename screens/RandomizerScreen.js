@@ -1,10 +1,8 @@
 // @ts-check
-//import * as React from 'react';
 import React, { Component } from "react";
-import { View, Text, Button, StyleSheet, AsyncStorage } from 'react-native';
-import { getEnforcing } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { View, StyleSheet, Alert, AsyncStorage } from 'react-native';
 import Consts from "../Consts";
-import { PushHistoryToStorage, AddToHistoryList } from '../localStorage'
+import { PushHistoryToStorage, AddToHistoryList, MoveToBotOfFavs } from '../localStorage'
 // @ts-ignore
 import WheelOfFortune from 'react-native-wheel-of-fortune';
 const wheelFrame = Consts.color5;
@@ -36,7 +34,6 @@ class Wheel extends Component
           backgroundColor={ wheelFrame }
           getWinner={(value, index) => this.setState({ winnerValue: BorrowValue(value), winnerIndex: index })}
         />
-        {/* <Button title="Press me" onPress={ () => { this.child._onPress() } } /> */}
       </View>
     )
   }
@@ -45,10 +42,15 @@ class Wheel extends Component
 //work-around to keep the value of the winner after the constructor is deleted.
 async function BorrowValue(value)
 {
-  Consts.winner = value.toString();
   AddToHistoryList(value.toString());
   await PushHistoryToStorage();
-  alert('The winner is: ' + Consts.historyList[0]); //TODO real winner alert    https://docs.nativebase.io/Components.html#toast-type-headref
+  await MoveToBotOfFavs(value.toString());
+  Alert.alert(
+    Consts.historyList[0] + ' was added to your history list', '',
+    [ 
+      { text: 'Close' }, 
+    ]
+  );
   return value //gets the wheel result.
 }
 

@@ -20,7 +20,7 @@ const App = () => {
         <RootStack.Screen name="Favorites" component={FavoritesScreen} />
         <RootStack.Screen name="History" component={HistoryScreen} />
         <RootStack.Screen name="Search" component={SearchScreen} />
-        <RootStack.Screen name="Randomizer" component={RandomizerScreen} />
+        <RootStack.Screen name="Spin The Wheel" component={RandomizerScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

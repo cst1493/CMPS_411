@@ -3,16 +3,9 @@ import React, {Component} from 'react';
 import { ListItem , Icon} from 'react-native-elements';
 import { View, Text, Button, StyleSheet, ScrollView, Alert } from 'react-native';
 import Consts from '../Consts';
-import { AsyncStorage } from 'react-native';
-import { add, color } from 'react-native-reanimated';
 import CheckBox from '@react-native-community/checkbox';
-import { PushHistoryToStorage, AddToHistoryList, PushFavoritesToStorage } from '../localStorage'
-import { Circle } from 'react-native-svg';
+import { PushHistoryToStorage, AddToHistoryList, PushFavoritesToStorage, MoveToBotOfFavs } from '../localStorage'
 import DialogInput from 'react-native-dialog-input'
-
-//RECOMMENDED TO RUN PushFavoritesToStorage(true) ONCE TO STORE DUMMY DATA //
-//import { PushFavoritesToStorage } from '../localStorage';
-//PushFavoritesToStorage(true);
 
 const buttonColor = Consts.color3;
 const buttonColor2 = Consts.color4;
@@ -35,10 +28,10 @@ class Favorites extends Component
   }
   goToWheel() { //navigate if 2 or more selected foods.
     if (Consts.totalChecks < 2) { 
-      alert("Must select 2 or more items to randomize."); //TODO replace with: https://docs.nativebase.io/Components.html#toast-type-headref 
+      alert("Must select 2 or more items to go to the wheel.");
       return;
     }
-    this.props.navigation.navigate('Randomizer');
+    this.props.navigation.navigate('Spin The Wheel');
     return;
   }
 
@@ -74,10 +67,9 @@ class Favorites extends Component
             <DialogInput 
               isDialogVisible={this.state.dialogVisible}
               title={"Add Temporary Meal"}
-              //message={"Add Meal to Wheel"}
               hintInput ={"Meal"}
               cancelText={"Close"}
-              submitInput={ (inputText) => {addToWheel(inputText), alert(inputText +" has been added to the Wheel!")} }
+              submitInput={ (inputText) => { addUserInputToWheel(inputText) } }
               closeDialog={ () => {this.setState({dialogVisible: false})}}>
             </DialogInput>
           </View>
@@ -133,7 +125,7 @@ function decideNowBtn(decidedMeal) {
   Alert.alert(
     'Are you sure you want to add ' + decidedMeal + ' to your history?', '',
     [ 
-      { text: 'Cancel', onPress: () => console.log('canceled action') },
+      { text: 'Cancel' },
       { text: 'Confirm', onPress: () => confirmDecideNow(decidedMeal) }, 
     ]
   );
@@ -141,7 +133,11 @@ function decideNowBtn(decidedMeal) {
 function confirmDecideNow(decidedMeal) {
   AddToHistoryList(decidedMeal);
   PushHistoryToStorage();
-  //TODO sort this food to the bottom of favorites array.
+  MoveToBotOfFavs(decidedMeal); //sorts & saves favorites
+  Alert.alert(
+    decidedMeal + ' has been added to your history.', '',
+    [ { text: 'Close' } ]
+  );
 }
 
 function deleteFavoriteBtn(foodName) {
@@ -149,7 +145,7 @@ function deleteFavoriteBtn(foodName) {
     'DELETE', 
     'Are you sure you want to permanently delete ' + foodName + ' from your favorites?',
     [ 
-      { text: 'Cancel', onPress: () => console.log('canceled action') },
+      { text: 'Cancel' },
       { text: 'Confirm', onPress: () => confirmDeleteFavorite(foodName) }, 
     ]
   );
@@ -160,7 +156,7 @@ function confirmDeleteFavorite(foodName) {
   for(var i = 0; i < len; i++) {
     if(foodName == Consts.favoritesList[i]) {
       index = i;
-      console.log('found & deleted ' + Consts.favoritesList[index] + ' at index ' + index);
+      //console.log('found & deleted ' + Consts.favoritesList[index] + ' at index ' + index);
     }
   }
   if (index != -1) { //found item
@@ -169,9 +165,17 @@ function confirmDeleteFavorite(foodName) {
     }
     Consts.favoritesList.pop();
     PushFavoritesToStorage(); //push array to storage.
-    //TODO refresh page with new array.
+    //refresh page with new array. /////////////////////////////////////////////////////////////////////////////////// TODO Refresh
   }
-  else {console.log('something went wrong...  Unable to find foodname for deleting.')}
+}
+
+function addUserInputToWheel(addItem) {
+  if (addItem == null || addItem == "") { return; }
+  addToWheel(addItem);
+  Alert.alert(
+    addItem +' was added to the wheel!', '',
+    [ { text: 'Exit' } ]
+  );
 }
 
 function addToWheel(addItem) {

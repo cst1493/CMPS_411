@@ -1,40 +1,32 @@
 //@ts-check
-import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import Consts from './Consts';
-import arrayMove from 'array-move';
 
 const hKey = 'history';
 const fKey = 'favorites';
 //AsyncStorage.removeItem(favoritesKey); //to delete all local storage while testing.
 
-async function MoveToBotOfList(favorites, latestMeal) {
-    try {
-        //Get Last Index of Array
-        const len = favorites.length-1;
-
-        //Find index of latestMeal
-        var latestIndex;
-        for(var i = 0; i<favorites.length;i++){
-            if (favorites[i]==latestMeal) {
-                latestIndex = i;
-            } 
-        }
-        //check to make sure latestIndex isn't null
-        if (latestIndex == null) {
-            throw 'Index not found!';
-        }
-        //move the index to the last index
-        const newFavArray = arrayMove(favorites,latestIndex,len);
-        
-        //Store the new array in local storage
-        AsyncStorage.setItem(fKey, JSON.stringify(newFavArray));
-        console.log('stored: ' + newFavArray);
-        return;
-
-    } catch(error) {
-        console.log("MoveToBotOfList" + error);
+export async function MoveToBotOfFavs(latestMeal) {
+  var favs = Consts.favoritesList;
+  var temp = "";
+  var prevIndex = -1;
+  if (favs.length > 0) {
+    for (var i = 0; i < favs.length-1; i++) {
+      if (favs[i] == latestMeal) {
+        temp = favs[i];
+        prevIndex = i;
+      }
     }
+    if (prevIndex != -1) {
+      for (var i = prevIndex; i < favs.length-1; i++) {
+        favs[i] = favs[i+1]
+      }
+      favs[favs.length-1] = temp;
+      Consts.favoritesList = favs;
+      PushFavoritesToStorage();
+    }
+  }
+  return;
 }
 
 export function AddToHistoryList(newItem) 
@@ -84,12 +76,7 @@ export async function PullFavoritesFromStorage() { //update Consts.favoritesList
         console.log("failed to retrieveData()");
     } return;
 }
-export async function PushFavoritesToStorage(populateDummyData) { //overwrite current Consts.favoritesList.
-    if (populateDummyData == true) {
-      const testFavorites = ['Chicken', 'Fish', 'Subway', 'Pizza'
-      , 'Salad', 'Shrimp', 'China Buffet', 'Popeyes', 'BK', 'Canes', 'Burgers', 'Fried Rice', 'Tacos', 'Pancakes', 'Eggs']; //*/
-      Consts.favoritesList = testFavorites;
-    }
+export async function PushFavoritesToStorage() { //overwrite current Consts.favoritesList.
     try {
       await AsyncStorage.removeItem(fKey); //reset old key to null (replaces file).
       AsyncStorage.setItem(fKey, JSON.stringify(Consts.favoritesList));

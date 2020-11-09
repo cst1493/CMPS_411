@@ -2,7 +2,6 @@
 import React,{Component} from 'react';
 import { View, Text, Button, FlatList, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import {SearchBar, ListItem} from 'react-native-elements';
-import { Line } from 'react-native-svg';
 import { PushFavoritesToStorage } from '../localStorage';
 import Consts from '../Consts';
 import DialogInput from 'react-native-dialog-input'
@@ -18,11 +17,10 @@ const searchItems = [ //77 items
 'Tilapia', 'Tofu', 'Tuna', 'Turkey', 'Waffles', 'Wings', 'Wrap'
 ];
 
-/*const listColor = '#cccccc'; const buttonColor = '#777777'; const barButtonColor = '#333333'; const border = Consts.color5;//*/
 const listColor = Consts.color1;
 const buttonColor = Consts.color3;
 const barButtonColor = Consts.color4;
-const border = Consts.color5;//*/
+const border = Consts.color5;
 
 class SearchScreen extends Component {
   constructor(props) {
@@ -55,7 +53,7 @@ searchFilterFunction = text => {
 renderHeader = () => {
   return (
     <SearchBar
-      placeholder="Search..." //lightTheme
+      placeholder="Search..."
       round
       onChangeText={text => this.searchFilterFunction(text)}
       autoCorrect={false}
@@ -71,13 +69,9 @@ renderHeader = () => {
         </View>
       );
     }
-  //if (this.state.data == null) {return (this.state.data = searchItems)}
   return (
     <View style={styles.container}>
       <ListItem  containerStyle={styles.Listing}>
-        <View style={styles.topButtons}>
-          <Button title="Search Nearby Restaurants" color={barButtonColor} onPress={ () => addByUserInput() }/>
-        </View>
         <View style={styles.topButtons}>
           <Button title="Add Food Myself" color={barButtonColor} onPress={ () => this.setState({dialogVisible: true}) }/>
         </View>
@@ -96,7 +90,7 @@ renderHeader = () => {
       </View>
 
       <FlatList
-        data = {this.state.data} //rendering data makes weird error where you can navigate to all pages...  TODO
+        data = {this.state.data}
         renderItem={({ item, index }) => (
           <ListItem key={index} containerStyle={styles.Listing}>
             <View style={styles.LI_Section1}>
@@ -110,7 +104,6 @@ renderHeader = () => {
           </ListItem>
         )}
         keyExtractor={(item, index) => item + index}
-        //ItemSeparatorComponent={this.renderSeparator} //replaced with ListItems
         ListHeaderComponent={this.renderHeader}
       />
     </View>
@@ -119,10 +112,11 @@ renderHeader = () => {
 }
 
 function addToFavoritesBtn(newFav) {
+  if (newFav == null || newFav == "") { alert('canceled out'); return; }
   Alert.alert(
     'Are you sure you want to add ' + newFav + ' to your favorites?', '',
     [ 
-      { text: 'Cancel', onPress: () => console.log('canceled action') },
+      { text: 'Cancel' },
       { text: 'Confirm', onPress: () => confirmedAddFavorite(newFav) }, 
     ]
   );
@@ -139,16 +133,14 @@ function confirmedAddFavorite(newFav) {
       Consts.favoritesList[i] = Consts.favoritesList[i-1];
     } 
     Consts.favoritesList[0] = newFav;
-    PushFavoritesToStorage(false); //add array to DB
+    PushFavoritesToStorage(); //add array to DB
     //alert so the user doesn't backout too fast while uploading.
-    alert(newFav + ' is added to your favorites.');
+    Alert.alert(
+      newFav + ' is added to your favorites.', '',
+      [{ text: 'Close' }]
+    );
   } 
   else { alert('This food is already in your favorites list.'); }
-}
-
-
-function addByUserInput() {
-  return
 }
 
 const styles = StyleSheet.create({
@@ -157,7 +149,7 @@ const styles = StyleSheet.create({
     backgroundColor: border,
   }, 
   topButtons: {
-    width: '50%',
+    width: '100%',
     fontSize: 20,
   },
   barButtons: {
