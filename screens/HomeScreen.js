@@ -22,6 +22,7 @@ class HomeScreen extends Component
   }
 
   render() {
+    //AsyncStorage.removeItem('favorites'); AsyncStorage.removeItem('history');
     PullFavoritesFromStorage();
     PullHistoryFromStorage();
     return (

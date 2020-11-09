@@ -57,7 +57,7 @@ export async function PullHistoryFromStorage() { //update Consts.Name with store
           Consts.historyList = await AsyncStorage.getItem(hKey).then(require => JSON.parse(require))
           .catch(error => console.log('retrieve error'));
       }
-      else console.log('favoritesKey is empty.')
+      else console.log('historyKey is empty.')
     } catch (error) {
           console.log("failed to retrieveData()");
     } return;

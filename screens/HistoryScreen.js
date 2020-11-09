@@ -1,6 +1,6 @@
 // @ts-check
-import React, {Component, useState } from 'react';
-import { View, Text, Button, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, FlatList, AsyncStorage } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Consts from '../Consts';
 
